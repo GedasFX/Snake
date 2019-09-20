@@ -54,11 +54,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arena.cs" />
+    <Compile Include="ArenaItems\Orange.cs" />
+    <Compile Include="ArenaItems\Apple.cs" />
     <Compile Include="ArenaView.cs" />
     <Compile Include="DoubleBufferedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SnakeModel.cs" />
+    <Compile Include="ArenaItems\ICell.cs" />
+    <Compile Include="ArenaItems\IFoodItem.cs" />
+    <Compile Include="ArenaItems\ISnekBody.cs" />
+    <Compile Include="FoodFactory.cs" />
+    <Compile Include="Snek.cs" />
     <Compile Include="SnakeMainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +73,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ArenaItems\SnekBody.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -90,6 +97,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

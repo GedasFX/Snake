@@ -1,42 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Drawing;
+using Snake.ArenaItems;
 
 namespace Snake
 {
-    public enum Food
-    {
-        None = 0,
-        Apple,
-        Orange
-    }
-
     public class Arena
     {
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width { get; }
+        public int Height { get; }
 
-        public SnakeModel Snake {get; set;}
+        public Snek Snake { get; set; }
 
-        public Food[,] Cells { get; private set; }
-        private Random random = new Random();
+        public ICell[,] Cells { get; }
+        private readonly Random _random = new Random(0);
 
         public Arena(int width, int height)
         {
             Width = width;
             Height = height;
 
-            Cells = new Food[width, height];
+            Cells = new ICell[width, height];
 
-            Snake = new SnakeModel(this);
-
+            Snake = new Snek(this, new Point(1, 1));
         }
 
         public void Update()
         {
             Snake.Move();
-            if (random.Next(100) <= 4)
+            if (_random.Next(100) <= 4)
             {
                 CreateFood();
             }
@@ -44,7 +35,7 @@ namespace Snake
 
         public void CreateFood()
         {
-            Cells[random.Next(0, Width), random.Next(0, Height)] = (Food)random.Next(1, 3);
+            Cells[_random.Next(0, Width), _random.Next(0, Height)] = FoodFactory.GenerateFoodItem();
         }
     }
 }
