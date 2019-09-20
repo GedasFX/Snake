@@ -8,7 +8,7 @@ namespace Snake.ArenaItems
 
         public void Interact(Snek snek)
         {
-            snek.AddGrowth(1);
+            snek.Growth += 1;
         }
     }
 }

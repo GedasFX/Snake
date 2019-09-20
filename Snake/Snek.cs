@@ -15,20 +15,30 @@ namespace Snake
         /// <summary>
         /// Last element is the front of the snake. First element is the tail.
         /// </summary>
-        public LinkedList<Point> Body = new LinkedList<Point>();
+        public LinkedList<Point> Body;
 
-        private Direction _direction;
         private readonly Arena _arena;
-
-        private int _growth = 2;
         private Point _speed;
 
+        public int Growth { get; set; } = 2;
+
+        public Direction Direction { get; set; }
+        public int SpeedModifier { get; set; }
+
         public Snek(Arena arena, Point spawnPoint)
+            : this(arena, spawnPoint, new LinkedList<Point>(), Direction.Right, 1)
+        {
+        }
+
+        public Snek(Arena arena, Point spawnPoint, LinkedList<Point> body, Direction direction, int speedModifier)
         {
             _arena = arena;
 
+            Body = body;
+            SpeedModifier = speedModifier;
+
             Body.AddLast(spawnPoint);
-            ChangeDirection(Direction.Right);
+            ChangeDirection(direction);
         }
 
         public void Move()
@@ -43,8 +53,8 @@ namespace Snake
 
             // Free the tail cell if snake is not growing.
             var tail = Body.First.Value;
-            if (_growth > 0)
-                _growth--;
+            if (Growth > 0)
+                Growth--;
             else
             {
                 _arena.Cells[tail.X, tail.Y] = null;
@@ -52,50 +62,51 @@ namespace Snake
             }
         }
 
-        public void AddGrowth(int deltaGrowth) => _growth += deltaGrowth;
-
         public void ChangeDirection(Direction newDirection)
         {
             switch (newDirection)
             {
                 case Direction.Up:
-                    if (_direction != Direction.Down)
+                    if (Direction != Direction.Down)
                     {
                         _speed.X = 0;
                         _speed.Y = -1;
-                        _direction = newDirection;
+                        Direction = newDirection;
                     }
                     break;
 
                 case Direction.Down:
-                    if (_direction != Direction.Up)
+                    if (Direction != Direction.Up)
                     {
                         _speed.X = 0;
                         _speed.Y = 1;
-                        _direction = newDirection;
+                        Direction = newDirection;
                     }
                     break;
 
                 case Direction.Left:
-                    if (_direction != Direction.Right)
+                    if (Direction != Direction.Right)
                     {
                         _speed.X = -1;
                         _speed.Y = 0;
-                        _direction = newDirection;
+                        Direction = newDirection;
                     }
                     break;
 
                 case Direction.Right:
-                    if (_direction != Direction.Left)
+                    if (Direction != Direction.Left)
                     {
                         _speed.X = 1;
                         _speed.Y = 0;
-                        _direction = newDirection;
+                        Direction = newDirection;
                     }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newDirection), newDirection, null);
             }
+
+            _speed.X *= SpeedModifier;
+            _speed.Y *= SpeedModifier;
         }
 
         private Point GetNewHead()
