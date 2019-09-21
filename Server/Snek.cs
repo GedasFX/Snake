@@ -19,7 +19,7 @@ namespace Server
         private readonly Arena _arena;
         private Point _speed;
 
-        public int Growth { get; set; } = 20;
+        public int Growth { get; set; } = 2;
 
         // In edge cases you can quickly change direction twice to do a 180 in a single frame and instantly eat yourself.
         // This adds a 1 frame delay buffer, so you cannot turn 180 degrees in a single frame.

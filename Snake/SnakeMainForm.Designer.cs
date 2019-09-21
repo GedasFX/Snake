@@ -36,10 +36,10 @@
             this.PanelArena.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.PanelArena.Location = new System.Drawing.Point(10, 9);
-            this.PanelArena.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PanelArena.Location = new System.Drawing.Point(10, 10);
+            this.PanelArena.Margin = new System.Windows.Forms.Padding(2);
             this.PanelArena.Name = "PanelArena";
-            this.PanelArena.Size = new System.Drawing.Size(429, 306);
+            this.PanelArena.Size = new System.Drawing.Size(500, 400);
             this.PanelArena.TabIndex = 2;
             this.PanelArena.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelArena_Paint);
             // 
@@ -47,11 +47,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 324);
+            this.ClientSize = new System.Drawing.Size(520, 420);
             this.Controls.Add(this.PanelArena);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "SnakeMainForm";
             this.Text = "Snake";
+            this.MinimizeBox = false;
+            this.MaximizeBox = false;
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SnakeMainForm_KeyDown);
             this.ResumeLayout(false);
 

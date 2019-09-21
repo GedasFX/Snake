@@ -14,8 +14,8 @@ namespace Server
     {
         public List<Player> Players { get; }
 
-        public int Width { get; } = 40;
-        public int Height { get; } = 50;
+        public int Width { get; } = 50;
+        public int Height { get; } = 40;
 
         public ICell[,] Cells { get; }
         public Dictionary<Point, Color> ColorMap { get; }
@@ -65,7 +65,7 @@ namespace Server
                         CreateFood();
                     }
 
-                    await Task.Delay(250);
+                    await Task.Delay(100);
                 }
 
                 // ReSharper disable once FunctionNeverReturns
