@@ -20,9 +20,13 @@ namespace Snake
         private readonly Arena _arena;
         private Point _speed;
 
-        public int Growth { get; set; } = 2;
+        public int Growth { get; set; } = 20;
 
-        public Direction Direction { get; set; }
+        // In edge cases you can quickly change direction twice to do a 180 in a single frame and instantly eat yourself.
+        // This adds a 1 frame delay buffer, so you cannot turn 180 degrees in a single frame.
+        public Direction CurrentDirection { get; set; }
+        public Direction NextDirection { get; set; }
+
         public int SpeedModifier { get; set; }
 
         public Brush Color { get; internal set; }
@@ -40,6 +44,8 @@ namespace Snake
             SpeedModifier = speedModifier;
 
             Body.AddLast(spawnPoint);
+
+            NextDirection = direction;
             ChangeDirection(direction);
 
             Color = color;
@@ -64,6 +70,8 @@ namespace Snake
                 _arena.Cells[tail.X, tail.Y] = null;
                 Body.RemoveFirst();
             }
+
+            CurrentDirection = NextDirection;
         }
 
         public void ChangeDirection(Direction newDirection)
@@ -71,38 +79,38 @@ namespace Snake
             switch (newDirection)
             {
                 case Direction.Up:
-                    if (Direction != Direction.Down)
+                    if (CurrentDirection != Direction.Down)
                     {
                         _speed.X = 0;
                         _speed.Y = -1;
-                        Direction = newDirection;
+                        NextDirection = newDirection;
                     }
                     break;
 
                 case Direction.Down:
-                    if (Direction != Direction.Up)
+                    if (CurrentDirection != Direction.Up)
                     {
                         _speed.X = 0;
                         _speed.Y = 1;
-                        Direction = newDirection;
+                        NextDirection = newDirection;
                     }
                     break;
 
                 case Direction.Left:
-                    if (Direction != Direction.Right)
+                    if (CurrentDirection != Direction.Right)
                     {
                         _speed.X = -1;
                         _speed.Y = 0;
-                        Direction = newDirection;
+                        NextDirection = newDirection;
                     }
                     break;
 
                 case Direction.Right:
-                    if (Direction != Direction.Left)
+                    if (CurrentDirection != Direction.Left)
                     {
                         _speed.X = 1;
                         _speed.Y = 0;
-                        Direction = newDirection;
+                        NextDirection = newDirection;
                     }
                     break;
                 default:
