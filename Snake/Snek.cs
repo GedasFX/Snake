@@ -25,12 +25,14 @@ namespace Snake
         public Direction Direction { get; set; }
         public int SpeedModifier { get; set; }
 
+        public Brush Color { get; internal set; }
+
         public Snek(Arena arena, Point spawnPoint)
-            : this(arena, spawnPoint, new LinkedList<Point>(), Direction.Right, 1)
+            : this(arena, spawnPoint, new LinkedList<Point>(), Direction.Right, 1, Brushes.Firebrick)
         {
         }
 
-        public Snek(Arena arena, Point spawnPoint, LinkedList<Point> body, Direction direction, int speedModifier)
+        public Snek(Arena arena, Point spawnPoint, LinkedList<Point> body, Direction direction, int speedModifier, Brush color)
         {
             _arena = arena;
 
@@ -39,6 +41,8 @@ namespace Snake
 
             Body.AddLast(spawnPoint);
             ChangeDirection(direction);
+
+            Color = color;
         }
 
         public void Move()
@@ -49,7 +53,7 @@ namespace Snake
             _arena.Cells[newHead.X, newHead.Y]?.Interact(this);
 
             // Set the currently visited cell as the player's.
-            _arena.Cells[newHead.X, newHead.Y] = new SnekBody(Body.AddLast(newHead));
+            _arena.Cells[newHead.X, newHead.Y] = new SnekBody(Color, Body.AddLast(newHead));
 
             // Free the tail cell if snake is not growing.
             var tail = Body.First.Value;
@@ -127,6 +131,25 @@ namespace Snake
 
             var newHead = new Point(newX, newY);
             return newHead;
+        }
+
+        public void TrimTail(LinkedListNode<Point> cutoffPoint)
+        {
+            // Trim the list until snake was eaten
+            while (Body.First != cutoffPoint)
+            {
+                var cell = Body.First.Value;
+                Body.RemoveFirst();
+                _arena.Cells[cell.X, cell.Y] = null;
+            }
+            
+            // Trim it once more, because it was trimmed up until the trim point. Exempt if it would obliterate the snake.
+            if (Body.Count > 1)
+            {
+                var cell = Body.First.Value;
+                Body.RemoveFirst();
+                _arena.Cells[cell.X, cell.Y] = null;
+            }
         }
     }
 }
