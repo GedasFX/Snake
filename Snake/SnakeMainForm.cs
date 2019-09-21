@@ -28,20 +28,22 @@ namespace Snake
 
         private async Task JoinArena()
         {
-            var socket = new ClientWebSocket();
-            await socket.ConnectAsync(new Uri("ws://localhost:5000"), CancellationToken.None);
-
-            while (true)
+            using (var socket = new ClientWebSocket())
             {
-                var buf = new byte[4096];
-                var res = await socket.ReceiveAsync(new ArraySegment<byte>(buf), CancellationToken.None);
+                await socket.ConnectAsync(new Uri("ws://localhost:5000"), CancellationToken.None);
 
-                _map = JsonConvert.DeserializeObject<Message>(Encoding.ASCII.GetString(buf, 0, res.Count)).Arena;
+                while (true)
+                {
+                    var buf = new byte[4096];
+                    var res = await socket.ReceiveAsync(new ArraySegment<byte>(buf), CancellationToken.None);
 
-                PanelArena.Refresh();
+                    _map = JsonConvert.DeserializeObject<Message>(Encoding.ASCII.GetString(buf, 0, res.Count)).Arena;
 
-                await socket.SendAsync(new ArraySegment<byte>(new[] { (byte)_nextDirection }),
-                    WebSocketMessageType.Binary, true, CancellationToken.None);
+                    PanelArena.Refresh();
+
+                    await socket.SendAsync(new ArraySegment<byte>(new[] {(byte) _nextDirection}),
+                        WebSocketMessageType.Binary, true, CancellationToken.None);
+                }
             }
         }
 

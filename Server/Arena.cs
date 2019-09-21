@@ -33,7 +33,8 @@ namespace Server
 
         public void AddConnection(WebSocket socket)
         {
-            Players.Add(new Player(socket, this));
+            Players.Add(new Player(socket, this, 
+                Color.FromArgb(_random.Next(255), _random.Next(255), _random.Next(255))));
         }
 
         public Task StartAsync()

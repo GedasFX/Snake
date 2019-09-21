@@ -28,10 +28,15 @@ namespace Server
 
         public int SpeedModifier { get; set; }
 
-        public Color Color { get; internal set; }
+        public Color Color { get; }
 
         public Snek(Arena arena, Point spawnPoint)
             : this(arena, spawnPoint, new LinkedList<Point>(), Direction.Right, 1, Color.Firebrick)
+        {
+        }
+
+        public Snek(Arena arena, Point spawnPoint, Color color)
+            : this(arena, spawnPoint, new LinkedList<Point>(), Direction.Right, 1, color)
         {
         }
 
