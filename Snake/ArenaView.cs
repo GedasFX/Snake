@@ -1,20 +1,17 @@
-﻿using System.Drawing;
-using Snake.ArenaItems;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace Snake
 {
     class ArenaView
     {
-        public static void Render(Graphics graphics, Arena arena)
+        public static void Render(Graphics graphics, Dictionary<Point, Color> colorMap, int height, int width)
         {
-            graphics.FillRectangle(Brushes.AliceBlue, 0, 0, arena.Width * 10, arena.Height * 10);
-            for (var x = 0; x < arena.Width; x++)
+            graphics.FillRectangle(Brushes.AliceBlue, 0, 0, width * 10, height * 10);
+
+            foreach (var color in colorMap)
             {
-                for (var y = 0; y < arena.Height; y++)
-                {
-                    if (arena.Cells[x, y] is ICell cell)
-                        graphics.FillRectangle(cell.Color, x * 10, y * 10, 10, 10);
-                }
+                graphics.FillRectangle(new SolidBrush(color.Value), color.Key.X * 10, color.Key.Y * 10, 10, 10);
             }
         }
     }

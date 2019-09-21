@@ -1,7 +1,7 @@
 ﻿using System;
-using Snake.ArenaItems;
+using Server.ArenaItems;
 
-namespace Snake
+namespace Server
 {
     public class FoodFactory
     {

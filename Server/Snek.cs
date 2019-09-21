@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using Snake.ArenaItems;
+using Server.ArenaItems;
 
-namespace Snake
+namespace Server
 {
     public enum Direction
     {
@@ -29,14 +28,14 @@ namespace Snake
 
         public int SpeedModifier { get; set; }
 
-        public Brush Color { get; internal set; }
+        public Color Color { get; internal set; }
 
         public Snek(Arena arena, Point spawnPoint)
-            : this(arena, spawnPoint, new LinkedList<Point>(), Direction.Right, 1, Brushes.Firebrick)
+            : this(arena, spawnPoint, new LinkedList<Point>(), Direction.Right, 1, Color.Firebrick)
         {
         }
 
-        public Snek(Arena arena, Point spawnPoint, LinkedList<Point> body, Direction direction, int speedModifier, Brush color)
+        public Snek(Arena arena, Point spawnPoint, LinkedList<Point> body, Direction direction, int speedModifier, Color color)
         {
             _arena = arena;
 
@@ -56,10 +55,10 @@ namespace Snake
             var newHead = GetNewHead();
 
             // If an object on the ground exists, interact with it.
-            _arena.Cells[newHead.X, newHead.Y]?.Interact(this);
+            _arena.GetCell(newHead.X, newHead.Y)?.Interact(this);
 
             // Set the currently visited cell as the player's.
-            _arena.Cells[newHead.X, newHead.Y] = new SnekBody(Color, Body.AddLast(newHead));
+            _arena.UpdateCell(newHead.X, newHead.Y, new SnekBody(Color, Body.AddLast(newHead)));
 
             // Free the tail cell if snake is not growing.
             var tail = Body.First.Value;
@@ -67,7 +66,7 @@ namespace Snake
                 Growth--;
             else
             {
-                _arena.Cells[tail.X, tail.Y] = null;
+                _arena.UpdateCell(tail.X, tail.Y, null);
                 Body.RemoveFirst();
             }
 
@@ -114,7 +113,7 @@ namespace Snake
                     }
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(newDirection), newDirection, null);
+                    break;
             }
 
             _speed.X *= SpeedModifier;
@@ -148,7 +147,7 @@ namespace Snake
             {
                 var cell = Body.First.Value;
                 Body.RemoveFirst();
-                _arena.Cells[cell.X, cell.Y] = null;
+                _arena.UpdateCell(cell.X, cell.Y, null);
             }
             
             // Trim it once more, because it was trimmed up until the trim point. Exempt if it would obliterate the snake.
@@ -156,7 +155,7 @@ namespace Snake
             {
                 var cell = Body.First.Value;
                 Body.RemoveFirst();
-                _arena.Cells[cell.X, cell.Y] = null;
+                _arena.UpdateCell(cell.X, cell.Y, null);
             }
         }
     }

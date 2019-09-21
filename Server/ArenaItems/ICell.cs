@@ -1,10 +1,10 @@
 ﻿using System.Drawing;
 
-namespace Snake.ArenaItems
+namespace Server.ArenaItems
 {
     public interface ICell
     {
-        Brush Color { get; }
+        Color Color { get; }
         void Interact(Snek snek);
     }
 }

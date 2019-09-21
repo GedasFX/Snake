@@ -1,4 +1,4 @@
-﻿namespace Snake.ArenaItems
+﻿namespace Server.ArenaItems
 {
     public interface IFoodItem : ICell
     {

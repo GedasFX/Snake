@@ -28,35 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.TimerUpdateWorld = new System.Windows.Forms.Timer(this.components);
             this.PanelArena = new Snake.Controls.DoubleBufferedPanel();
             this.SuspendLayout();
             // 
-            // TimerUpdateWorld
-            // 
-            this.TimerUpdateWorld.Enabled = true;
-            this.TimerUpdateWorld.Interval = 50;
-            this.TimerUpdateWorld.Tick += new System.EventHandler(this.TimerUpdateWorld_Tick);
-            // 
             // PanelArena
             // 
-            this.PanelArena.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.PanelArena.Location = new System.Drawing.Point(12, 12);
+            this.PanelArena.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PanelArena.Location = new System.Drawing.Point(10, 9);
+            this.PanelArena.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PanelArena.Name = "PanelArena";
-            this.PanelArena.Size = new System.Drawing.Size(511, 397);
+            this.PanelArena.Size = new System.Drawing.Size(429, 306);
             this.PanelArena.TabIndex = 2;
             this.PanelArena.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelArena_Paint);
-            this.PanelArena.Resize += new System.EventHandler(this.PanelArena_Resize);
             // 
             // SnakeMainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(535, 421);
+            this.ClientSize = new System.Drawing.Size(449, 324);
             this.Controls.Add(this.PanelArena);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "SnakeMainForm";
             this.Text = "Snake";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SnakeMainForm_KeyDown);
@@ -65,8 +58,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Timer TimerUpdateWorld;
         private Snake.Controls.DoubleBufferedPanel PanelArena;
     }
 }

@@ -1,55 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace Snake
 {
     public partial class SnakeMainForm : Form
     {
-        Arena arena;
-        bool updating;
-
-        Random random = new Random();
+        private Dictionary<Point, Color> _map = new Dictionary<Point, Color>();
+        private Direction _nextDirection;
 
         public SnakeMainForm()
         {
             InitializeComponent();
-            CreateArena();
+            JoinArena().ConfigureAwait(false);
         }
 
         private void PanelArena_Paint(object sender, PaintEventArgs e)
         {
-            ArenaView.Render(e.Graphics, arena);
+            ArenaView.Render(e.Graphics, _map, 40, 50);
         }
 
-        private void TimerUpdateWorld_Tick(object sender, EventArgs e)
+        private async Task JoinArena()
         {
-            if (!updating)
+            var socket = new ClientWebSocket();
+            await socket.ConnectAsync(new Uri("ws://localhost:5000"), CancellationToken.None);
+
+            while (true)
             {
-                updating = true;
-                arena.Update();
+                var buf = new byte[4096];
+                var res = await socket.ReceiveAsync(new ArraySegment<byte>(buf), CancellationToken.None);
+
+                _map = JsonConvert.DeserializeObject<Message>(Encoding.ASCII.GetString(buf, 0, res.Count)).Arena;
+
                 PanelArena.Refresh();
-                updating = false;
-            }
-            else
-            {
-                Console.WriteLine("!");
-            }
-        }
 
-        private void PanelArena_Resize(object sender, EventArgs e)
-        {
-            CreateArena();
-        }
-
-        private void CreateArena()
-        {
-            arena = new Arena(PanelArena.Width / 10, PanelArena.Height / 10);
+                await socket.SendAsync(new ArraySegment<byte>(new[] { (byte)_nextDirection }),
+                    WebSocketMessageType.Binary, true, CancellationToken.None);
+            }
         }
 
         private void SnakeMainForm_KeyDown(object sender, KeyEventArgs e)
@@ -57,19 +50,19 @@ namespace Snake
             switch (e.KeyCode)
             {
                 case Keys.Down:
-                    arena.Snake.ChangeDirection(Direction.Down);
+                    _nextDirection = Direction.Down;
                     break;
 
                 case Keys.Left:
-                    arena.Snake.ChangeDirection(Direction.Left);
+                    _nextDirection = Direction.Left;
                     break;
 
                 case Keys.Right:
-                    arena.Snake.ChangeDirection(Direction.Right);
+                    _nextDirection = Direction.Right;
                     break;
 
                 case Keys.Up:
-                    arena.Snake.ChangeDirection(Direction.Up);
+                    _nextDirection = Direction.Up;
                     break;
             }
         }

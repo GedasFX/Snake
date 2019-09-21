@@ -1,10 +1,10 @@
 ﻿using System.Drawing;
 
-namespace Snake.ArenaItems
+namespace Server.ArenaItems
 {
     public class Orange : IFoodItem
     {
-        public Brush Color { get; } = Brushes.Orange;
+        public Color Color { get; } = Color.Orange;
 
         public void Interact(Snek snek)
         {

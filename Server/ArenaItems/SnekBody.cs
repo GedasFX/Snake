@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace Snake.ArenaItems
+namespace Server.ArenaItems
 {
     internal class SnekBody : ISnekBody
     {
         private readonly LinkedListNode<Point> _bodyNode;
 
-        public Brush Color { get; }
+        public Color Color { get; }
 
-        public SnekBody(Brush color, LinkedListNode<Point> bodyNode)
+        public SnekBody(Color color, LinkedListNode<Point> bodyNode)
         {
             _bodyNode = bodyNode;
 
