@@ -28,7 +28,6 @@ namespace Server
                     var webSocket = await context.WebSockets.AcceptWebSocketAsync();
                     arena.AddConnection(webSocket);
                     await Task.Delay(-1);
-                    Console.WriteLine("Bullshit");
                 }
                 else
                 {
