@@ -18,7 +18,10 @@ namespace Server.ArenaItems
 
         public void Interact(Snek snek)
         {
-            snek.TrimTail(_bodyNode);
+            if (snek.Body.Last == _bodyNode)
+                snek.ChangeDirection(Direction.None);
+            else
+                snek.TrimTail(_bodyNode);
         }
     }
 }

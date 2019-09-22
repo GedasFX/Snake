@@ -31,20 +31,35 @@ namespace Server
         }
 
 
-        public void AddConnection(WebSocket socket)
+        public void AddConnection(WebSocket socket, TaskCompletionSource<object> playerDisconnected)
         {
-            Players.Add(new Player(socket, this, 
+            Players.Add(new Player(socket, playerDisconnected, this,
                 Color.FromArgb(_random.Next(255), _random.Next(255), _random.Next(255))));
         }
 
-        public Task StartAsync()
+        private void RemoveConnection(Player player)
         {
-            return Task.Run(async () =>
+            Players.Remove(player);
+            foreach (var point in player.Snake.Body)
             {
-                var cycle = 0;
-                while (true)
+                UpdateCell(point.X, point.Y, null);
+            }
+
+            player.PlayerDisconnected.TrySetResult(null);
+        }
+
+        public async Task StartAsync()
+        {
+            var cycle = 0;
+            while (true)
+            {
+                try
                 {
-                    Console.WriteLine(cycle++);
+                    // Tick the server.
+                    Console.WriteLine($"Tick: {cycle++}.");
+
+                    // Update every player
+                    Console.Out.WriteLine($"Updating {Players.Count} players.");
                     foreach (var p in Players)
                     {
                         // Serialize the arena
@@ -55,22 +70,34 @@ namespace Server
                         var ct = new CancellationTokenSource();
                         ct.CancelAfter(250);
 
-                        await p.Socket.SendAsync(new ArraySegment<byte>(ser), WebSocketMessageType.Text,
+                        var task = p.Socket.SendAsync(new ArraySegment<byte>(ser), WebSocketMessageType.Text,
                             true, ct.Token);
+                        if (p.CheckDisconnected(task))
+                        {
+                            RemoveConnection(p);
+                            continue;
+                        }
 
                         p.Snake.Move();
                     }
 
-                    if (_random.Next(100) <= 4)
+
+                    // Generate food.
+                    Console.Out.WriteLine("Generating food.");
+                    if (_random.Next(20) == 0)
                     {
                         CreateFood();
                     }
 
+                    // Wait for next tick.
+                    Console.Out.WriteLine("Waiting...");
                     await Task.Delay(100);
                 }
-
-                // ReSharper disable once FunctionNeverReturns
-            });
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                }
+            }
         }
 
         public ICell GetCell(int x, int y) => Cells[x, y];

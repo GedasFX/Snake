@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Server.ArenaItems;
 
@@ -6,7 +7,7 @@ namespace Server
 {
     public enum Direction
     {
-        Up, Down, Left, Right
+        Up, Down, Left, Right, None
     }
 
     public class Snek
@@ -118,6 +119,9 @@ namespace Server
                     }
                     break;
                 default:
+                    _speed.X = 0;
+                    _speed.Y = 0;
+                    NextDirection = Direction.None;
                     break;
             }
 
@@ -148,15 +152,15 @@ namespace Server
         public void TrimTail(LinkedListNode<Point> cutoffPoint)
         {
             // Trim the list until snake was eaten
-            while (Body.First != cutoffPoint)
+            while (Body.First != cutoffPoint && Body.Last?.Previous != null)
             {
                 var cell = Body.First.Value;
                 Body.RemoveFirst();
                 _arena.UpdateCell(cell.X, cell.Y, null);
             }
-            
+
             // Trim it once more, because it was trimmed up until the trim point. Exempt if it would obliterate the snake.
-            if (Body.Count > 1)
+            if (Body.Last?.Previous != null)
             {
                 var cell = Body.First.Value;
                 Body.RemoveFirst();

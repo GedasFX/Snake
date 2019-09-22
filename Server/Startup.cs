@@ -25,9 +25,12 @@ namespace Server
             {
                 if (context.WebSockets.IsWebSocketRequest)
                 {
-                    var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                    arena.AddConnection(webSocket);
-                    await Task.Delay(-1);
+                    using (var webSocket = await context.WebSockets.AcceptWebSocketAsync())
+                    {
+                        var task = new TaskCompletionSource<object>();
+                        arena.AddConnection(webSocket, task);
+                        await task.Task;
+                    }
                 }
                 else
                 {
