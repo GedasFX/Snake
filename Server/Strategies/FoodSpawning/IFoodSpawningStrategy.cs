@@ -3,7 +3,7 @@
     /// <summary>
     /// An interface for various food spawning strategies.
     /// </summary>
-    interface IFoodSpawningStrategy
+    public interface IFoodSpawningStrategy
     {
         /// <summary>
         /// Spawns food in the arena according to a concrete strategy.
