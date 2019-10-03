@@ -118,5 +118,10 @@ namespace Server
         {
             UpdateCell(_random.Next(0, Width), _random.Next(0, Height), FoodFactory.GenerateFoodItem());
         }
+
+        public void CreateFood(int x, int y)
+        {
+            UpdateCell(x, y, FoodFactory.GenerateFoodItem());
+        }
     }
 }
