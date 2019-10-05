@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Server.ArenaItems;
+using Server.Strategies.FoodSpawning;
 
 namespace Server
 {
@@ -22,10 +23,22 @@ namespace Server
 
         private readonly Random _random = new Random(0);
 
+        // TODO: Refactor
+        private  IFoodSpawningStrategy randomStrategy, plusStrategy, squareStrategy;
+
+        private IFoodSpawningStrategy currentStrategy;
+
         public Arena()
         {
             Cells = new ICell[Width, Height];
             ColorMap = new Dictionary<Point, Color>();
+
+            // Strategies
+            randomStrategy = new FoodSpawningRandomStrategy(5, _random);
+            plusStrategy = new FoodSpawningPlusStrategy(5, _random);
+            squareStrategy = new FoodSpawningSquareStrategy(3, _random);
+
+            currentStrategy = randomStrategy;
 
             Players = new List<Player>();
         }
@@ -86,7 +99,8 @@ namespace Server
                     Logger.Instance.LogMessage("Generating food ...");
                     if (_random.Next(20) == 0)
                     {
-                        CreateFood();
+                        currentStrategy.Spawn(this);
+                        SwitchFoodGenerationStrategy();
                     }
 
                     // Wait until next server tick.
@@ -97,6 +111,28 @@ namespace Server
                 {
                     Logger.Instance.LogError(e.StackTrace);
                 }
+            }
+        }
+
+        private void SwitchFoodGenerationStrategy()
+        {
+            // Log.Instance.LogMessage("Switching strategy!");
+            Console.WriteLine("Switching strategy!");
+            int num = _random.Next(3);
+            switch(num)
+            {
+                case 0:
+                    currentStrategy = randomStrategy;
+                    Console.WriteLine("Switched to random food generation strategy!");
+                    break;
+                case 1:
+                    currentStrategy = plusStrategy;
+                    Console.WriteLine("Switched to plus pattern food generation strategy!");
+                    break;
+                case 2:
+                    currentStrategy = squareStrategy;
+                    Console.WriteLine("Switched to square pattern food generation strategy!");
+                    break;
             }
         }
 
@@ -117,6 +153,11 @@ namespace Server
         public void CreateFood()
         {
             UpdateCell(_random.Next(0, Width), _random.Next(0, Height), FoodFactory.GenerateFoodItem());
+        }
+
+        public void CreateFood(int x, int y)
+        {
+            UpdateCell(x, y, FoodFactory.GenerateFoodItem());
         }
     }
 }
