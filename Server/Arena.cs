@@ -55,11 +55,11 @@ namespace Server
             {
                 try
                 {
-                    // Tick the server.
-                    Console.WriteLine($"Tick: {cycle++}.");
+                    // Print the number of ticks elapsed.
+                    Logger.Instance.LogMessage($"Number of ticks elapsed: {cycle++}");
 
                     // Update every player
-                    Console.Out.WriteLine($"Updating {Players.Count} players.");
+                    Logger.Instance.LogMessage($"Updating {Players.Count} player(s)");
                     foreach (var p in Players)
                     {
                         // Serialize the arena
@@ -83,19 +83,19 @@ namespace Server
 
 
                     // Generate food.
-                    Console.Out.WriteLine("Generating food.");
+                    Logger.Instance.LogMessage("Generating food ...");
                     if (_random.Next(20) == 0)
                     {
                         CreateFood();
                     }
 
-                    // Wait for next tick.
-                    Console.Out.WriteLine("Waiting...");
+                    // Wait until next server tick.
+                    Logger.Instance.LogMessage("Waiting until next tick ...");
                     await Task.Delay(100);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.StackTrace);
+                    Logger.Instance.LogError(e.StackTrace);
                 }
             }
         }
