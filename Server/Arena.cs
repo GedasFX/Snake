@@ -2,20 +2,17 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net.WebSockets;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Server.ArenaItems;
 using Server.Strategies.FoodSpawning;
 
 namespace Server
 {
-    public class Arena
+    public class Arena : IObservable<Message>
     {
         public static Arena Instance { get; } = new Arena();
 
-        private List<Player> Players { get; } = new List<Player>();
+        public List<Player> Players { get; } = new List<Player>();
 
         public int Width { get; } = 50;
         public int Height { get; } = 40;
@@ -42,21 +39,10 @@ namespace Server
         }
 
 
-        public void AddConnection(WebSocket socket, TaskCompletionSource<object> playerDisconnected)
+        public void Connect(WebSocket socket, TaskCompletionSource<object> playerDisconnected)
         {
-            Players.Add(new Player(socket, playerDisconnected, this,
+            Subscribe(new Player(socket, playerDisconnected, this,
                 Color.FromArgb(_random.Next(255), _random.Next(255), _random.Next(255))));
-        }
-
-        private void RemoveConnection(Player player)
-        {
-            Players.Remove(player);
-            foreach (var point in player.Snake.Body)
-            {
-                UpdateCell(point.X, point.Y, null);
-            }
-
-            player.PlayerDisconnected.TrySetResult(null);
         }
 
         public async Task StartAsync()
@@ -71,27 +57,12 @@ namespace Server
 
                     // Update every player
                     Logger.Instance.LogMessage($"Updating {Players.Count} player(s)");
+
+                    var message = new Message { Arena = ColorMap };
                     foreach (var p in Players)
                     {
-                        // Serialize the arena
-                        var obj = new Message { Arena = ColorMap };
-                        var ser = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(obj));
-
-                        // Send the message
-                        using var ct = new CancellationTokenSource();
-                        ct.CancelAfter(250);
-
-                        var task = p.Socket.SendAsync(new ArraySegment<byte>(ser), WebSocketMessageType.Text,
-                            true, ct.Token);
-                        if (p.CheckDisconnected(task))
-                        {
-                            RemoveConnection(p);
-                            continue;
-                        }
-
-                        p.Snake.Move();
+                        p.OnNext(message);
                     }
-
 
                     // Generate food.
                     Logger.Instance.LogMessage("Generating food ...");
@@ -158,6 +129,16 @@ namespace Server
         public void CreateFood(int x, int y)
         {
             UpdateCell(x, y, FoodFactory.GenerateFoodItem());
+        }
+
+        public IDisposable Subscribe(IObserver<Message> observer)
+        {
+            if (!(observer is Player player))
+                throw new ArgumentException();
+
+            Players.Add(player);
+
+            return player;
         }
     }
 }

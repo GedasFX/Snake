@@ -7,8 +7,8 @@ namespace Server
     {
         private static readonly Random Random = new Random();
 
-        public static Apple Apple { get; set; } = new Apple();
-        public static Orange Orange { get; set; } = new Orange();
+        public static Apple Apple { get; } = new Apple();
+        public static Orange Orange { get; } = new Orange();
 
         public static IFoodItem GenerateFoodItem()
         {
