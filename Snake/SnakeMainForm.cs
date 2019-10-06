@@ -34,7 +34,7 @@ namespace Snake
 
                 while (true)
                 {
-                    var buf = new byte[4096];
+                    var buf = new byte[65536];
                     var res = await socket.ReceiveAsync(new ArraySegment<byte>(buf), CancellationToken.None);
 
                     _map = JsonConvert.DeserializeObject<Message>(Encoding.ASCII.GetString(buf, 0, res.Count)).Arena;

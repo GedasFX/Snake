@@ -12,8 +12,7 @@ namespace Server
         /// <summary>
         /// The instance of the logger singleton class.
         /// </summary>
-        public static Logger Instance
-        {
+        public static Logger Instance {
             get { return instance; }
         }
 
@@ -21,7 +20,7 @@ namespace Server
         /// Logs a regular message to the console.
         /// </summary>
         /// <param name="msg">Message to log.</param>
-        public void LogMessage(string msg) => Console.WriteLine(msg);
+        public void LogMessage(string msg) => LogColor(ConsoleColor.White, msg);
 
         /// <summary>
         /// Logs a warning message to the console.

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Server
@@ -12,12 +10,12 @@ namespace Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<Arena>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Arena arena)
+        public void Configure(IApplicationBuilder app)
         {
+            var arena = Arena.Instance;
             arena.StartAsync().ConfigureAwait(false);
 
             app.UseWebSockets();
@@ -25,12 +23,10 @@ namespace Server
             {
                 if (context.WebSockets.IsWebSocketRequest)
                 {
-                    using (var webSocket = await context.WebSockets.AcceptWebSocketAsync())
-                    {
-                        var task = new TaskCompletionSource<object>();
-                        arena.AddConnection(webSocket, task);
-                        await task.Task;
-                    }
+                    using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                    var task = new TaskCompletionSource<object>();
+                    arena.AddConnection(webSocket, task);
+                    await task.Task;
                 }
                 else
                 {

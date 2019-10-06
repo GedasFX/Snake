@@ -13,34 +13,32 @@ namespace Server
 {
     public class Arena
     {
-        public List<Player> Players { get; }
+        public static Arena Instance { get; } = new Arena();
+
+        private List<Player> Players { get; } = new List<Player>();
 
         public int Width { get; } = 50;
         public int Height { get; } = 40;
 
-        public ICell[,] Cells { get; }
-        public Dictionary<Point, Color> ColorMap { get; }
+        private ICell[,] Cells { get; }
+        private Dictionary<Point, Color> ColorMap { get; }
 
         private readonly Random _random = new Random(0);
 
-        // TODO: Refactor
-        private  IFoodSpawningStrategy randomStrategy, plusStrategy, squareStrategy;
+        private readonly List<IFoodSpawningStrategy> _strategies = new List<IFoodSpawningStrategy>();
 
-        private IFoodSpawningStrategy currentStrategy;
+        private IFoodSpawningStrategy _currentStrategy;
 
-        public Arena()
+        private Arena()
         {
             Cells = new ICell[Width, Height];
             ColorMap = new Dictionary<Point, Color>();
 
             // Strategies
-            randomStrategy = new FoodSpawningRandomStrategy(5, _random);
-            plusStrategy = new FoodSpawningPlusStrategy(5, _random);
-            squareStrategy = new FoodSpawningSquareStrategy(3, _random);
-
-            currentStrategy = randomStrategy;
-
-            Players = new List<Player>();
+            _strategies.Add(new FoodSpawningRandomStrategy(5, _random));
+            _strategies.Add(new FoodSpawningPlusStrategy(5, _random));
+            _strategies.Add(new FoodSpawningSquareStrategy(3, _random));
+            _currentStrategy = _strategies[0];
         }
 
 
@@ -80,7 +78,7 @@ namespace Server
                         var ser = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(obj));
 
                         // Send the message
-                        var ct = new CancellationTokenSource();
+                        using var ct = new CancellationTokenSource();
                         ct.CancelAfter(250);
 
                         var task = p.Socket.SendAsync(new ArraySegment<byte>(ser), WebSocketMessageType.Text,
@@ -99,7 +97,7 @@ namespace Server
                     Logger.Instance.LogMessage("Generating food ...");
                     if (_random.Next(20) == 0)
                     {
-                        currentStrategy.Spawn(this);
+                        _currentStrategy.Spawn(this);
                         SwitchFoodGenerationStrategy();
                     }
 
@@ -118,21 +116,23 @@ namespace Server
         {
             // Log.Instance.LogMessage("Switching strategy!");
             Console.WriteLine("Switching strategy!");
-            int num = _random.Next(3);
-            switch(num)
+            var num = _random.Next(3);
+
+            _currentStrategy = _strategies[num];
+
+            switch (num)
             {
                 case 0:
-                    currentStrategy = randomStrategy;
-                    Console.WriteLine("Switched to random food generation strategy!");
+                    Logger.Instance.LogMessage("Switched to random food generation strategy!");
                     break;
                 case 1:
-                    currentStrategy = plusStrategy;
-                    Console.WriteLine("Switched to plus pattern food generation strategy!");
+                    Logger.Instance.LogMessage("Switched to plus pattern food generation strategy!");
                     break;
                 case 2:
-                    currentStrategy = squareStrategy;
-                    Console.WriteLine("Switched to square pattern food generation strategy!");
+                    Logger.Instance.LogMessage("Switched to square pattern food generation strategy!");
                     break;
+                default:
+                    throw new ArgumentException();
             }
         }
 

@@ -8,7 +8,7 @@ namespace Server
     public class Player
     {
         public WebSocket Socket { get; }
-        
+
         // TrySet anything to this object to disconnect the player. Frees the websocket.
         public TaskCompletionSource<object> PlayerDisconnected { get; }
         public Snek Snake { get; }
@@ -17,7 +17,7 @@ namespace Server
         private int _deliveryFailCount;
         private const int MaxDeliveryAttempts = 5;
 
-        public Player(WebSocket socket, TaskCompletionSource<object> playerDisconnected, Arena arena, Point spawnPoint, Color color)
+        private Player(WebSocket socket, TaskCompletionSource<object> playerDisconnected, Arena arena, Point spawnPoint, Color color)
         {
             Socket = socket;
             PlayerDisconnected = playerDisconnected;
