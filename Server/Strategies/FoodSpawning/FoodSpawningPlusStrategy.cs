@@ -58,6 +58,19 @@ namespace Server.Strategies.FoodSpawning
                 arena.CreateFood(point.X, point.Y);
         }
 
+
+        /// <summary>
+        /// Sets the lengths of the lines that make up the plus.
+        /// </summary>
+        /// <param name="length"></param>
+        public void SetLineLength(int length)
+        {
+            if (length <= 0)
+                throw new ArgumentOutOfRangeException(nameof(length), "Line length must be positive and non-zero!");
+
+            _lineLength = length;
+        }
+
         private List<ICell> CollectCells(int centerX, int centerY, int spikeLength, Arena arena)
         {
             var cells = new List<ICell>();
@@ -79,7 +92,7 @@ namespace Server.Strategies.FoodSpawning
             return cells;
         }
 
-        private readonly int _lineLength;           // Length of the two lines that make up the plus.
+        private int _lineLength;           // Length of the two lines that make up the plus.
         private readonly Random _rng;
     }
 }
