@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Server.ArenaItems;
+using Server.Facades;
 using Server.Strategies.FoodSpawning;
 
 namespace Server
@@ -22,20 +23,15 @@ namespace Server
 
         private readonly Random _random = new Random(0);
 
-        private readonly List<IFoodSpawningStrategy> _strategies = new List<IFoodSpawningStrategy>();
-
-        private IFoodSpawningStrategy _currentStrategy;
+        private readonly FoodSpawningFacade _foodSpawningFacade;
 
         private Arena()
         {
             Cells = new ICell[Width, Height];
             ColorMap = new Dictionary<Point, Color>();
 
-            // Strategies
-            _strategies.Add(new FoodSpawningRandomStrategy(5, _random));
-            _strategies.Add(new FoodSpawningPlusStrategy(5, _random));
-            _strategies.Add(new FoodSpawningSquareStrategy(3, _random));
-            _currentStrategy = _strategies[0];
+            // Create food spawning facade
+            _foodSpawningFacade = new FoodSpawningFacade(this, _random);
         }
 
 
@@ -47,16 +43,15 @@ namespace Server
 
         public async Task StartAsync()
         {
-            var cycle = 0;
             while (true)
             {
                 try
                 {
                     // Print the number of ticks elapsed.
-                    Logger.Instance.LogMessage($"Number of ticks elapsed: {cycle++}");
+                    // Logger.Instance.LogMessage($"Number of ticks elapsed: {cycle++}");
 
                     // Update every player
-                    Logger.Instance.LogMessage($"Updating {Players.Count} player(s)");
+                    // Logger.Instance.LogMessage($"Updating {Players.Count} player(s)");
 
                     var message = new Message { Arena = ColorMap };
                     foreach (var p in Players)
@@ -65,45 +60,16 @@ namespace Server
                     }
 
                     // Generate food.
-                    Logger.Instance.LogMessage("Generating food ...");
-                    if (_random.Next(20) == 0)
-                    {
-                        _currentStrategy.Spawn(this);
-                        SwitchFoodGenerationStrategy();
-                    }
+                    _foodSpawningFacade.ExecuteTick();
 
                     // Wait until next server tick.
-                    Logger.Instance.LogMessage("Waiting until next tick ...");
+                    // Logger.Instance.LogMessage("Waiting until next tick ...");
                     await Task.Delay(100);
                 }
                 catch (Exception e)
                 {
                     Logger.Instance.LogError(e.StackTrace);
                 }
-            }
-        }
-
-        private void SwitchFoodGenerationStrategy()
-        {
-            // Log.Instance.LogMessage("Switching strategy!");
-            Console.WriteLine("Switching strategy!");
-            var num = _random.Next(3);
-
-            _currentStrategy = _strategies[num];
-
-            switch (num)
-            {
-                case 0:
-                    Logger.Instance.LogMessage("Switched to random food generation strategy!");
-                    break;
-                case 1:
-                    Logger.Instance.LogMessage("Switched to plus pattern food generation strategy!");
-                    break;
-                case 2:
-                    Logger.Instance.LogMessage("Switched to square pattern food generation strategy!");
-                    break;
-                default:
-                    throw new ArgumentException();
             }
         }
 

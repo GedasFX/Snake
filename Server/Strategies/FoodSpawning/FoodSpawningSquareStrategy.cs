@@ -46,6 +46,18 @@ namespace Server.Strategies.FoodSpawning
                 arena.CreateFood(point.X, point.Y);
         }
 
+        /// <summary>
+        /// Sets the length of the sides of the generated squares
+        /// </summary>
+        /// <param name="length">Length of the sides</param>
+        public void SetSideLength(int length)
+        {
+            if (length <= 0)
+                throw new ArgumentOutOfRangeException(nameof(length), "Side length must be positive and non-zero!");
+
+            _sideLength = length;
+        }
+
         private List<ICell> CollectCells(int topLeftY, int topLeftX, Arena arena)
         {
             // Calculate bottom right point location
@@ -58,7 +70,7 @@ namespace Server.Strategies.FoodSpawning
             return cells;
         }
 
-        private readonly int _sideLength;       // Length of the squares' sides
+        private int _sideLength;       // Length of the squares' sides
         private readonly Random _rng;           // Random number generator
     }
 }
