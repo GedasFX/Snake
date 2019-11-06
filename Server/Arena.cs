@@ -31,7 +31,7 @@ namespace Server
             ColorMap = new Dictionary<Point, Color>();
 
             // Create food spawning facade
-            _foodSpawningFacade = new FoodSpawningFacade(this, _random);
+            _foodSpawningFacade = new FoodSpawningFacadeAdapter(this, _random) as FoodSpawningFacade;
         }
 
 

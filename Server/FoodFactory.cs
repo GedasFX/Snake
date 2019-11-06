@@ -17,15 +17,12 @@ namespace Server
 
         public static IFoodItem GenerateFoodItem(int index)
         {
-            switch (index)
+            return index switch
             {
-                case 0:
-                    return Apple;
-                case 1:
-                    return Orange;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(index), index, null);
-            }
+                0 => Apple,
+                1 => Orange,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), index, null),
+            };
         }
     }
 }

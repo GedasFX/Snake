@@ -7,14 +7,10 @@ namespace Server
     /// </summary>
     public class Logger
     {
-        private static readonly Logger instance = new Logger();
-
         /// <summary>
         /// The instance of the logger singleton class.
         /// </summary>
-        public static Logger Instance {
-            get { return instance; }
-        }
+        public static Logger Instance { get; } = new Logger();
 
         /// <summary>
         /// Logs a regular message to the console.

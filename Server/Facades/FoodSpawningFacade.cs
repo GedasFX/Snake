@@ -122,7 +122,7 @@ namespace Server.Facades
         /// Executes a tick of the food spawning process. If this tick is a spawn tick, the spawner may spawn some food.
         /// This function should be called every tick.
         /// </summary>
-        public void ExecuteTick()
+        public virtual void ExecuteTick()
         {
             // Check if the current tick is a spawn tick.
             if (CurrentTick % SpawnFrequency == 0)
@@ -179,7 +179,7 @@ namespace Server.Facades
         /// <summary>
         /// Picks a random strategy (random scatter, squares, pluses) and switches to it.
         /// </summary>
-        public void SwitchStrategyAtRandom()
+        public virtual void SwitchStrategyAtRandom()
         {
             int roll = _rng.Next(3);
 

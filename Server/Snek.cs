@@ -15,7 +15,7 @@ namespace Server
         /// <summary>
         /// Last element is the front of the snake. First element is the tail.
         /// </summary>
-        public LinkedList<Point> Body;
+        public LinkedList<Point> Body { get; set; }
 
         private readonly Arena _arena;
         private Point _speed;
