@@ -5,7 +5,6 @@ using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Server.ArenaItems;
 using Server.Facades;
-using Server.Strategies.FoodSpawning;
 
 namespace Server
 {
@@ -19,19 +18,19 @@ namespace Server
         public int Height { get; } = 40;
 
         private ICell[,] Cells { get; }
-        private Dictionary<Point, Color> ColorMap { get; }
+        public Dictionary<Point, Color> ColorMap { get; }
 
         private readonly Random _random = new Random(0);
 
-        private readonly FoodSpawningFacade _foodSpawningFacade;
+        public FoodSpawningFacade FoodSpawningFacade { get; }
 
-        private Arena()
+        public Arena()
         {
             Cells = new ICell[Width, Height];
             ColorMap = new Dictionary<Point, Color>();
 
             // Create food spawning facade
-            _foodSpawningFacade = new FoodSpawningFacadeAdapter(this, _random) as FoodSpawningFacade;
+            FoodSpawningFacade = new FoodSpawningFacadeAdapter(this, _random) as FoodSpawningFacade;
         }
 
 
@@ -41,7 +40,7 @@ namespace Server
                 Color.FromArgb(_random.Next(255), _random.Next(255), _random.Next(255))));
         }
 
-        public async Task StartAsync()
+        public virtual async Task StartAsync()
         {
             while (true)
             {
@@ -60,7 +59,7 @@ namespace Server
                     }
 
                     // Generate food.
-                    _foodSpawningFacade.ExecuteTick();
+                    FoodSpawningFacade.ExecuteTick();
 
                     // Wait until next server tick.
                     // Logger.Instance.LogMessage("Waiting until next tick ...");

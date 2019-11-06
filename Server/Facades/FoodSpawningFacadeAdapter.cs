@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Server.Facades
 {
     public class FoodSpawningFacadeAdapter : FoodSpawningFacade
     {
-        StrategyAdaptee _adaptee = new StrategyAdaptee();
+        private readonly StrategyAdaptee _adaptee = new StrategyAdaptee();
 
         public FoodSpawningFacadeAdapter(Arena arena, Random rng) : base(arena, rng)
         {
@@ -20,13 +17,12 @@ namespace Server.Facades
 
         private class StrategyAdaptee
         {
-            Random _rng = new Random();
+            private readonly Random _rng = new Random();
 
             public void SwitchStrategy(FoodSpawningFacade facade)
             {
-                // make it twice as unlikely
+                // make it twice as unlikely to change strategy by adding another failure point
                 int roll = _rng.Next(6);
-                Console.Out.WriteLine("eeee");
                 switch (roll)
                 {
                     case 0:
@@ -37,6 +33,9 @@ namespace Server.Facades
                         break;
                     case 2:
                         facade.SwitchToPlusStrategy();
+                        break;
+                    default:
+                        Logger.Instance.LogMessage("Strategy was not changed");
                         break;
                 }
             }
