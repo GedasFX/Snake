@@ -10,5 +10,10 @@ namespace Server.ArenaItems
         {
             snek.Growth += 2;
         }
+
+        public void Undo(Snek snek)
+        {
+            snek.Growth -= 2;
+        }
     }
 }

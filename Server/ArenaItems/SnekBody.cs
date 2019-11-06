@@ -23,5 +23,7 @@ namespace Server.ArenaItems
             else
                 snek.TrimTail(_bodyNode);
         }
+
+        public void Undo(Snek snek) => throw new System.NotImplementedException();
     }
 }

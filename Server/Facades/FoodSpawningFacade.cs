@@ -45,7 +45,7 @@ namespace Server.Facades
             SpawnFrequency = 20;
 
             // Set chance for food spawn during spawn ticks to 5%
-            SpawnChance = 5.0;
+            SpawnChance = 50.0;
 
             // Notify with message to console.
             Logger.Instance.LogMessage("Food spawning facade constructed!");
@@ -138,6 +138,11 @@ namespace Server.Facades
                 else
                 {
                     Logger.Instance.LogMessage($"Food spawning facade: roll unsuccessful!");
+                }
+
+                if (roll > 95)
+                {
+                    SwitchStrategyAtRandom();
                 }
             }
 

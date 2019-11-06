@@ -2,9 +2,8 @@
 
 namespace Server.ArenaItems
 {
-    public interface ICell
+    public interface ICell : ICommand
     {
         Color Color { get; }
-        void Interact(Snek snek);
     }
 }
