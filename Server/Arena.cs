@@ -10,8 +10,6 @@ namespace Server
 {
     public class Arena : IObservable<Message>
     {
-        public static Arena Instance { get; } = new Arena();
-
         public List<Player> Players { get; } = new List<Player>();
 
         public int Width { get; } = 50;
@@ -24,13 +22,13 @@ namespace Server
 
         public FoodSpawningFacade FoodSpawningFacade { get; }
 
-        public Arena()
+        protected Arena()
         {
             Cells = new ICell[Width, Height];
             ColorMap = new Dictionary<Point, Color>();
 
             // Create food spawning facade
-            FoodSpawningFacade = new FoodSpawningFacadeAdapter(this, _random) as FoodSpawningFacade;
+            FoodSpawningFacade = new FoodSpawningFacadeAdapter(this, _random);
         }
 
 
@@ -63,7 +61,7 @@ namespace Server
 
                     // Wait until next server tick.
                     // Logger.Instance.LogMessage("Waiting until next tick ...");
-                    await Task.Delay(100);
+                    await Task.Delay(250);
                 }
                 catch (Exception e)
                 {
@@ -88,7 +86,7 @@ namespace Server
 
         public void CreateFood()
         {
-            UpdateCell(_random.Next(0, Width), _random.Next(0, Height), FoodFactory.GenerateFoodItem());
+            CreateFood(_random.Next(0, Width), _random.Next(0, Height));
         }
 
         public void CreateFood(int x, int y)

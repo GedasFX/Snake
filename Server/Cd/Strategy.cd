@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Server.Facades.FoodSpawningFacade">
+    <Position X="9.75" Y="2.5" Width="2.25" />
+    <Members>
+      <Field Name="_arena" Hidden="true" />
+      <Field Name="_rng" Hidden="true" />
+      <Method Name="ExecuteTick" Hidden="true" />
+      <Method Name="FoodSpawningFacade" Hidden="true" />
+      <Method Name="SetFoodSquareSize" Hidden="true" />
+      <Method Name="SetPlusSize" Hidden="true" />
+      <Method Name="SetRandomScatterSpawnAmount" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AIAgBUAAIQAAAAABAADAAAAIAAAgAEACAIAAAAACBAg=</HashCode>
+      <FileName>Facades\FoodSpawningFacade.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_arena" />
+      <Field Name="_currentStrategy" />
+      <Field Name="_plusStrategy" />
+      <Field Name="_randomScatterScatterStrategy" />
+      <Field Name="_rng" />
+      <Field Name="_squareStrategy" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Server.Strategies.FoodSpawning.FoodSpawningPlusStrategy" Collapsed="true">
+    <Position X="14.25" Y="2.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAQAAAAAAAAEAAAAAAAAAAgQAAAAAAAAAAAA=</HashCode>
+      <FileName>Strategies\FoodSpawning\FoodSpawningPlusStrategy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Server.Strategies.FoodSpawning.FoodSpawningRandomScatterStrategy" Collapsed="true">
+    <Position X="14.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAgAEAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Strategies\FoodSpawning\FoodSpawningRandomScatterStrategy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Server.Strategies.FoodSpawning.FoodSpawningSquareStrategy" Collapsed="true">
+    <Position X="14.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAQAAAAAAAAEAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Strategies\FoodSpawning\FoodSpawningSquareStrategy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Server.Strategies.FoodSpawning.IFoodSpawningStrategy" Collapsed="true">
+    <Position X="14.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Strategies\FoodSpawning\IFoodSpawningStrategy.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

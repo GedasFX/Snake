@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Server.Facades.FoodSpawningFacade">
+    <Position X="10.75" Y="3.5" Width="2" />
+    <Members>
+      <Method Name="ExecuteTick" Hidden="true" />
+      <Method Name="FoodSpawningFacade" Hidden="true" />
+      <Method Name="SetFoodSquareSize" Hidden="true" />
+      <Method Name="SetPlusSize" Hidden="true" />
+      <Method Name="SetRandomScatterSpawnAmount" Hidden="true" />
+      <Method Name="SwitchToPlusStrategy" Hidden="true" />
+      <Method Name="SwitchToRandomScatterStrategy" Hidden="true" />
+      <Method Name="SwitchToSquareStrategy" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AIAgBUAAIQAAAAABAADAAAAIAAAgAEACAIAAAAACBAg=</HashCode>
+      <FileName>Facades\FoodSpawningFacade.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Server.Facades.FoodSpawningFacadeAdapter">
+    <Position X="13.5" Y="3.25" Width="2.25" />
+    <Members>
+      <Method Name="FoodSpawningFacadeAdapter" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Server.Facades.FoodSpawningFacadeAdapter.StrategyAdaptee">
+        <Compartments>
+          <Compartment Name="Fields" Collapsed="true" />
+        </Compartments>
+        <TypeIdentifier>
+          <NewMemberFileName>Facades\FoodSpawningFacadeAdapter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Facades\FoodSpawningFacadeAdapter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Server.Arena">
+    <Position X="4.75" Y="3.75" Width="1.5" />
+    <Members>
+      <Method Name="Arena" Hidden="true" />
+      <Method Name="Connect" Hidden="true" />
+      <Method Name="CreateFood" Hidden="true" />
+      <Method Name="GetCell" Hidden="true" />
+      <Method Name="Subscribe" Hidden="true" />
+      <Method Name="UpdateCell" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAAAAAABAAAAAAAAgIAAMAAAIAiAAEAAUAAAAAAAAE=</HashCode>
+      <FileName>Arena.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Server.ArenaAdapter">
+    <Position X="7" Y="3.25" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Server.ArenaAdapter.ArenaAdaptee">
+        <TypeIdentifier>
+          <NewMemberFileName>ArenaAdapter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>ArenaAdapter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

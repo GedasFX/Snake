@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Server.Arena">
+    <Position X="12.25" Y="6" Width="1.5" />
+    <Members>
+      <Method Name="Arena" Hidden="true" />
+      <Property Name="Cells" Hidden="true" />
+      <Property Name="ColorMap" Hidden="true" />
+      <Method Name="Connect" Hidden="true" />
+      <Method Name="CreateFood" Hidden="true" />
+      <Property Name="FoodSpawningFacade" Hidden="true" />
+      <Method Name="GetCell" Hidden="true" />
+      <Property Name="Height" Hidden="true" />
+      <Method Name="StartAsync" Hidden="true" />
+      <Method Name="UpdateCell" Hidden="true" />
+      <Property Name="Width" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAAAAAABAAAAAAAAgIAAMAAAIAiAAEAAUAAAAAAAAE=</HashCode>
+      <FileName>Arena.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Server.Message" Collapsed="true">
+    <Position X="10.25" Y="4.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Server.Player">
+    <Position X="8.25" Y="6" Width="1.5" />
+    <Members>
+      <Method Name="CheckDisconnected" Hidden="true" />
+      <Method Name="HandleDirectionChanges" Hidden="true" />
+      <Method Name="Player" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AMAAAAAAACSAAAIAAAAAAQACAAAIAQAACAAAACAAAAA=</HashCode>
+      <FileName>Player.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Arena" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="System.IObservable&lt;T&gt;">
+    <Position X="12.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="System.IDisposable">
+    <Position X="8.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="System.IObserver&lt;T&gt;">
+    <Position X="8.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

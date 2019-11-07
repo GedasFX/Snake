@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Net.WebSockets;
 using System.Threading.Tasks;
-using Server.ArenaItems;
-using Server.Facades;
 
 namespace Server
 {
@@ -41,7 +36,7 @@ namespace Server
                         // Logger.Instance.LogMessage("Waiting until next tick ...");
 
                         // Run the game slower
-                        await Task.Delay(250);
+                        await Task.Delay(100);
                     }
                     catch (Exception e)
                     {
