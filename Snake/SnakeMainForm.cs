@@ -30,7 +30,15 @@ namespace Snake
         {
             using (var socket = new ClientWebSocket())
             {
-                await socket.ConnectAsync(new Uri("ws://localhost:5000"), CancellationToken.None);
+                try
+                {
+                    await socket.ConnectAsync(new Uri("ws://localhost:5000"), CancellationToken.None);
+                }
+                catch (Exception e)
+                {
+                    _ = Console.Out.WriteLineAsync(e.ToString());
+                    throw;
+                }
 
                 while (true)
                 {
@@ -46,6 +54,8 @@ namespace Snake
                             msg += Encoding.ASCII.GetString(buf, 0, res.Count);
                         } while (!res.EndOfMessage);
 
+                        await Console.Out.WriteLineAsync($"Received {res.Count} bytes");
+
                         _map = JsonConvert.DeserializeObject<Message>(msg).Arena;
 
                         PanelArena.Refresh();
@@ -54,32 +64,34 @@ namespace Snake
                             WebSocketMessageType.Binary, true, CancellationToken.None);
 
                     }
-                    catch { }
+                    catch (Exception e)
+                    {
+                        _ = Console.Out.WriteLineAsync(e.ToString());
+                    }
                 }
             }
         }
-    }
 
-    private void SnakeMainForm_KeyDown(object sender, KeyEventArgs e)
-    {
-        switch (e.KeyCode)
+        private void SnakeMainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            case Keys.Down:
-                _nextDirection = Direction.Down;
-                break;
+            switch (e.KeyCode)
+            {
+                case Keys.Down:
+                    _nextDirection = Direction.Down;
+                    break;
 
-            case Keys.Left:
-                _nextDirection = Direction.Left;
-                break;
+                case Keys.Left:
+                    _nextDirection = Direction.Left;
+                    break;
 
-            case Keys.Right:
-                _nextDirection = Direction.Right;
-                break;
+                case Keys.Right:
+                    _nextDirection = Direction.Right;
+                    break;
 
-            case Keys.Up:
-                _nextDirection = Direction.Up;
-                break;
+                case Keys.Up:
+                    _nextDirection = Direction.Up;
+                    break;
+            }
         }
     }
-}
 }
