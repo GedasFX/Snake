@@ -21,18 +21,15 @@ namespace Server.Strategies.FoodSpawning
 
         public void Spawn(Arena arena)
         {
-            for(int i = 0; i < _spawnAmount; ++i)
+            for (int i = 0; i < _spawnAmount; ++i)
             {
-                int y, x;
-                ICell cell;
-
                 // Generate random points in the arena until we find an unoccupied one.
-                do
-                {
-                    y = _rng.Next(arena.Height);
-                    x = _rng.Next(arena.Width);
-                    cell = arena.GetCell(x, y);
-                } while (cell != null);
+                var y = _rng.Next(arena.Height);
+                var x = _rng.Next(arena.Width);
+
+                var cell = arena.GetCell(x, y);
+                if (cell is ISnekBody)
+                    continue; // Spawn Failed
 
                 arena.CreateFood(x, y);
             }

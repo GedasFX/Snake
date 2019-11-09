@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace Server.Strategies.FoodSpawning
 {
@@ -28,15 +29,12 @@ namespace Server.Strategies.FoodSpawning
         {
             int spikeLength = _lineLength / 2;      // Lengths of the "spikes" that stick out of the center.
 
-            int centerX, centerY;                   // Coordinates of the center of the plus.
-            List<ICell> cellsInPlus;                // Cells that make up the plus.
+            var centerY = _rng.Next(spikeLength, arena.Height - spikeLength);
+            var centerX = _rng.Next(spikeLength, arena.Width - spikeLength);
 
-            do
-            {
-                centerY = _rng.Next(spikeLength, arena.Height - spikeLength);
-                centerX = _rng.Next(spikeLength, arena.Width - spikeLength);
-                cellsInPlus = CollectCells(centerX, centerY, spikeLength, arena);
-            } while (!cellsInPlus.TrueForAll(c => c == null));
+            var cellsInPlus = CollectCells(centerX, centerY, spikeLength, arena);
+            if (cellsInPlus.Any(c => c is ISnekBody))
+                return; // Spawn Failed
 
             // Collect points
             int minX = centerX - spikeLength;

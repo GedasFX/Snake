@@ -24,15 +24,12 @@ namespace Server.Strategies.FoodSpawning
 
         public void Spawn(Arena arena)
         {
-            int topLeftY, topLeftX;             // Coordinates of the top left point of the square
-            List<ICell> cellsInSquare;          // List of all cells that comprise the square
+            var topLeftY = _rng.Next(arena.Height - _sideLength + 1);
+            var topLeftX = _rng.Next(arena.Width - _sideLength + 1);
 
-            do
-            {
-                topLeftY = _rng.Next(arena.Height - _sideLength + 1);
-                topLeftX = _rng.Next(arena.Width - _sideLength + 1);
-                cellsInSquare = CollectCells(topLeftY, topLeftX, arena);
-            } while (!cellsInSquare.TrueForAll(c => c == null));
+            var cellsInSquare = CollectCells(topLeftY, topLeftX, arena);
+            if (cellsInSquare.Any(c => c is ISnekBody))
+                return; // Spawn Failed
 
             // Found suitable location, calculate bottom right point and collect all points that comprise the square.
             var bottomRight = new Point(topLeftX + _sideLength - 1, topLeftY + _sideLength - 1);

@@ -42,10 +42,10 @@ namespace Server.Facades
             _currentStrategy = _randomScatterScatterStrategy;
 
             // Set spawning frequency at 20 ticks.
-            SpawnFrequency = 20;
+            SpawnFrequency = 5;
 
             // Set chance for food spawn during spawn ticks to 5%
-            SpawnChance = 50.0;
+            SpawnChance = 100.0;
 
             // Notify with message to console.
             Logger.Instance.LogMessage("Food spawning facade constructed!");

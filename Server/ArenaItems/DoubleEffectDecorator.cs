@@ -10,7 +10,7 @@ namespace Server.ArenaItems
         public DoubleEffectDecorator(IFoodItem baseFoodItem)
         {
             _baseFoodItem = baseFoodItem;
-            Color = _baseFoodItem.Color;
+            Color = Color.BlanchedAlmond;;
         }
 
         public void Interact(Snek snek)
