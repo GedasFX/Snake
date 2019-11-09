@@ -10,7 +10,7 @@ namespace Server
         Up, Down, Left, Right, None
     }
 
-    public class Snek
+    public class Snek : ICloneable
     {
         /// <summary>
         /// Last element is the front of the snake. First element is the tail.
@@ -166,6 +166,16 @@ namespace Server
                 Body.RemoveFirst();
                 _arena.UpdateCell(cell.X, cell.Y, null);
             }
+        }
+
+        public object Clone()
+        {
+            var cpy = MemberwiseClone() as Snek;
+
+            // Deep copy the body
+            cpy.Body = new LinkedList<Point>(Body);
+
+            return cpy;
         }
     }
 }

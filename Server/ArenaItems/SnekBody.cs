@@ -7,6 +7,8 @@ namespace Server.ArenaItems
     {
         private readonly LinkedListNode<Point> _bodyNode;
 
+        private Snek prevSnek;
+
         public Color Color { get; }
 
         public SnekBody(Color color, LinkedListNode<Point> bodyNode)
@@ -22,8 +24,15 @@ namespace Server.ArenaItems
                 snek.ChangeDirection(Direction.None);
             else
                 snek.TrimTail(_bodyNode);
+            
+            // HUGE unecessary memory leak. For demonstration purposes only.
+            //prevSnek = snek.Clone() as Snek;
         }
 
-        public void Undo(Snek snek) => throw new System.NotImplementedException();
+        public void Undo(Snek snek)
+        {
+            if (prevSnek != null)
+                snek.Body = prevSnek.Body;
+        }
     }
 }
