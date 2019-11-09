@@ -64,7 +64,7 @@ namespace Server
             _arena.GetCell(newHead.X, newHead.Y)?.Interact(this);
 
             // Set the currently visited cell as the player's.
-            _arena.UpdateCell(newHead.X, newHead.Y, new SnekBody(Color, Body.AddLast(newHead)));
+            _arena.UpdateCell(newHead.X, newHead.Y, new SnekBody(Color, this, Body.AddLast(newHead)));
 
             // Free the tail cell if snake is not growing.
             var tail = Body.First.Value;

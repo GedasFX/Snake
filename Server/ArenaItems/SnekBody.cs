@@ -5,14 +5,16 @@ namespace Server.ArenaItems
 {
     internal class SnekBody : ISnekBody
     {
+        private readonly Snek _cellOwner;
         private readonly LinkedListNode<Point> _bodyNode;
 
         private Snek prevSnek;
 
         public Color Color { get; }
 
-        public SnekBody(Color color, LinkedListNode<Point> bodyNode)
+        public SnekBody(Color color, Snek cellOwner, LinkedListNode<Point> bodyNode)
         {
+            _cellOwner = cellOwner;
             _bodyNode = bodyNode;
 
             Color = color;
@@ -23,7 +25,7 @@ namespace Server.ArenaItems
             if (snek.Body.Last == _bodyNode)
                 snek.ChangeDirection(Direction.None);
             else
-                snek.TrimTail(_bodyNode);
+                _cellOwner.TrimTail(_bodyNode);
             
             // HUGE unecessary memory leak. For demonstration purposes only.
             //prevSnek = snek.Clone() as Snek;
