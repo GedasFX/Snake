@@ -22,8 +22,8 @@ namespace Server
             {
                 0 => Apple,
                 1 => Orange,
-                2 => new BlinkingDecorator(new Apple(), Color.Black),
-                3 => new DoubleEffectDecorator(new BlinkingDecorator(new Apple(), Color.Blue)),
+                2 => new CustomColorDecorator(Apple, Color.Brown),
+                3 => new DoubleEffectDecorator(new CustomColorDecorator(Apple, Color.Yellow)),
                 _ => throw new ArgumentOutOfRangeException(nameof(index), index, null),
             };
         }

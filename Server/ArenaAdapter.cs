@@ -23,7 +23,7 @@ namespace Server
                         // Update every player
                         // Logger.Instance.LogMessage($"Updating {Players.Count} player(s)");
 
-                        var message = new Message { Arena = arena.ColorMap };
+                        var message = new Message(arena.ColorMap);
                         foreach (var p in arena.Players)
                         {
                             p.OnNext(message);
