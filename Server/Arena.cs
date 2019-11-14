@@ -34,8 +34,9 @@ namespace Server
 
         public void Connect(WebSocket socket, TaskCompletionSource<object> playerDisconnected)
         {
-            Subscribe(new Player(socket, playerDisconnected, this,
-                Color.FromArgb(_random.Next(255), _random.Next(255), _random.Next(255))));
+            var playerColor = Color.FromArgb(_random.Next(255), _random.Next(255), _random.Next(255));
+            var player = new Player(socket, playerDisconnected, this, playerColor);
+            Subscribe(player);
         }
 
         public virtual async Task StartAsync()
