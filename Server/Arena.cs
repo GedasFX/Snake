@@ -94,6 +94,66 @@ namespace Server
             UpdateCell(x, y, FoodFactory.GenerateFoodItem());
         }
 
+        /// <summary>
+        /// Gets a point suitable for spawning a snake.
+        /// </summary>
+        /// <returns>A spawn point</returns>
+        public Point GetSpawnPoint()
+        {
+            IList<Point> emptyPoints = GetEmptyPoints();
+            if (emptyPoints.Count == 0)
+            {
+                // Arena is completely filled, forcibly remove a random food item from the arena and spawn the snake there.
+                Point spawnPoint = GetRandomFoodItemLocation();
+                Cells[spawnPoint.X, spawnPoint.Y] = null;
+                return spawnPoint;
+            }
+
+            int index = _random.Next(emptyPoints.Count);
+            return emptyPoints[index];
+        }
+
+        /// <summary>
+        /// Gets a list of empty points in the arena.
+        /// </summary>
+        /// <returns>A list of empty points</returns>
+        private IList<Point> GetEmptyPoints()
+        {
+            var emptyPoints = new List<Point>();
+
+            for (int x = 0; x < Cells.GetLength(0); ++x)
+            {
+                for (int y = 0; y < Cells.GetLength(1); ++y)
+                {
+                    if(Cells[x, y] == null)
+                        emptyPoints.Add(new Point(x, y));
+                }
+            }
+
+            return emptyPoints;
+        }
+
+        /// <summary>
+        /// Gets the location of a random food item in the arena.
+        /// </summary>
+        /// <returns>The location of the food item</returns>
+        private Point GetRandomFoodItemLocation()
+        {
+            var p = new Point();
+            ICell selectedCell;
+            int x, y;
+            do
+            {
+                x = _random.Next(Width);
+                y = _random.Next(Height);
+                selectedCell = Cells[x, y];
+            } while (!(selectedCell is IFoodItem));
+
+            p.X = x;
+            p.Y = y;
+            return p;
+        }
+
         public IDisposable Subscribe(IObserver<Message> observer)
         {
             if (!(observer is Player player))

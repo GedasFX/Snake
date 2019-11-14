@@ -42,7 +42,7 @@ namespace Server
         }
 
         public Player(WebSocket socket, TaskCompletionSource<object> playerDisconnected, Arena arena, Color color)
-            : this(socket, playerDisconnected, arena, new Point(1, 1), color)
+            : this(socket, playerDisconnected, arena, arena.GetSpawnPoint(), color)
         {
         }
 
