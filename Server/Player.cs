@@ -95,7 +95,14 @@ namespace Server
 
             Snake.Move();
         }
-        
+
+        /// <summary>
+        /// Resets the snake by shrinking it back to its initial starting size and moving it to
+        /// a random suitable location in the arena. It's as if the player just recently joined the game.
+        /// Called at the beginning of each game.
+        /// </summary>
+        public void ResetSnake() => Snake.Reset();
+
         public void Dispose()
         {
             Arena.Players.Remove(this);

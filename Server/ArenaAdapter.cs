@@ -13,6 +13,7 @@ namespace Server
         {
             public async Task StartAsync(Arena arena)
             {
+                int cycles = 0;
                 while (true)
                 {
                     try
@@ -34,6 +35,14 @@ namespace Server
 
                         // Wait until next server tick.
                         // Logger.Instance.LogMessage("Waiting until next tick ...");
+
+                        if (cycles % 50 == 0)
+                        {
+                            foreach(var p in arena.Players)
+                                p.ResetSnake();
+                        }
+
+                        cycles++;
 
                         // Run the game slower
                         await Task.Delay(100);
