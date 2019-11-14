@@ -56,6 +56,27 @@ namespace Server
             Color = color;
         }
 
+        /// <summary>
+        /// Resets the snake by shrinking it back to its initial starting size and moving it to
+        /// a random suitable location in the arena.
+        /// </summary>
+        public void Reset()
+        {
+            // Clear all cells occupied by this snake in the arena
+            foreach(var p in Body)
+                _arena.UpdateCell(p.X, p.Y, null);
+
+            Body = new LinkedList<Point>();
+            Growth = 2;
+
+            var spawnPoint = _arena.GetSpawnPoint();
+            Body.AddLast(spawnPoint);
+
+            var direction = Direction.Right;
+            NextDirection = direction;
+            ChangeDirection(direction);
+        }
+
         public void Move()
         {
             var newHead = GetNewHead();
