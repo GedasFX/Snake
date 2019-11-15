@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using Server.GameStates;
 
 namespace Server
 {
@@ -7,9 +8,17 @@ namespace Server
     {
         public Dictionary<Point, Color> Arena { get; }
 
-        public Message(Dictionary<Point, Color> arena)
+        // State of the game (pregame, in progress, ending soon, post-game)
+        public GameStateEnum GameState { get; }
+
+        // Player standings data for the top three players (only sent post-game)
+        public PlayerStandingsData[] Podium;
+
+        public Message(Dictionary<Point, Color> colorMap, GameStateEnum state, PlayerStandingsData[] podium)
         {
-            Arena = arena;
+            Arena = colorMap;
+            GameState = state;
+            Podium = podium;
         }
     }
 }
