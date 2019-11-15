@@ -35,7 +35,7 @@ namespace Server.Facades
                         facade.SwitchToPlusStrategy();
                         break;
                     default:
-                        Logger.Instance.LogMessage("Strategy was not changed");
+                        // Logger.Instance.LogMessage("Strategy was not changed");
                         break;
                 }
             }

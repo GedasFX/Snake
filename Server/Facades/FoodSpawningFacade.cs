@@ -48,7 +48,7 @@ namespace Server.Facades
             SpawnChance = 100.0;
 
             // Notify with message to console.
-            Logger.Instance.LogMessage("Food spawning facade constructed!");
+            // Logger.Instance.LogMessage("Food spawning facade constructed!");
         }
 
         #region Arena & RNG variables
@@ -127,17 +127,17 @@ namespace Server.Facades
             // Check if the current tick is a spawn tick.
             if (CurrentTick % SpawnFrequency == 0)
             {
-                Logger.Instance.LogMessage($"Food spawning facade: current tick {CurrentTick} is spawn tick!");
+                // Logger.Instance.LogMessage($"Food spawning facade: current tick {CurrentTick} is spawn tick!");
                 // Roll for chance to spawn food.
                 double roll = _rng.NextDouble() * 100.0;
                 if (roll < SpawnChance)
                 {
-                    Logger.Instance.LogMessage($"Food spawning facade: roll successful! Spawning food...");
+                    // Logger.Instance.LogMessage($"Food spawning facade: roll successful! Spawning food...");
                         _currentStrategy.Spawn(_arena);
                 }
                 else
                 {
-                    Logger.Instance.LogMessage($"Food spawning facade: roll unsuccessful!");
+                    // Logger.Instance.LogMessage($"Food spawning facade: roll unsuccessful!");
                 }
 
                 if (roll > 95)
@@ -154,7 +154,7 @@ namespace Server.Facades
         /// </summary>
         public void SwitchToRandomScatterStrategy()
         {
-            Logger.Instance.LogMessage("Food spawning facade: switching to random scatter strategy!");
+            // Logger.Instance.LogMessage("Food spawning facade: switching to random scatter strategy!");
             _currentStrategy = _randomScatterScatterStrategy;
         }
 
@@ -163,7 +163,7 @@ namespace Server.Facades
         /// </summary>
         public void SwitchToSquareStrategy()
         {
-            Logger.Instance.LogMessage("Food spawning facade: switching to food square strategy!");
+            // Logger.Instance.LogMessage("Food spawning facade: switching to food square strategy!");
             _currentStrategy = _squareStrategy;
         }
 
@@ -172,7 +172,7 @@ namespace Server.Facades
         /// </summary>
         public void SwitchToPlusStrategy()
         {
-            Logger.Instance.LogMessage("Food spawning facade: switching to plus generation strategy!");
+            // Logger.Instance.LogMessage("Food spawning facade: switching to plus generation strategy!");
             _currentStrategy = _plusStrategy;
         }
 
