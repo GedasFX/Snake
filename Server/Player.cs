@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Server.GameStates;
 
 namespace Server
 {
@@ -15,7 +16,7 @@ namespace Server
         // TrySet anything to this object to disconnect the player. Frees the websocket.
         private TaskCompletionSource<object> PlayerDisconnected { get; }
         private Arena Arena { get; }
-        private Snek Snake { get; }
+        public Snek Snake { get; }
 
         private Task _previousMessage;
         private int _deliveryFailCount;
@@ -93,7 +94,9 @@ namespace Server
                 return;
             }
 
-            Snake.Move();
+            // Move snake only when the game is in progress
+            if(message.GameState == GameStateEnum.InProgress || message.GameState == GameStateEnum.EndingSoon)
+                Snake.Move();
         }
 
         /// <summary>

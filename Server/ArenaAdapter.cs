@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Server.GameStates;
 
 namespace Server
 {
@@ -13,36 +15,26 @@ namespace Server
         {
             public async Task StartAsync(Arena arena)
             {
-                int cycles = 0;
                 while (true)
                 {
                     try
                     {
-                        // Print the number of ticks elapsed.
-                        // Logger.Instance.LogMessage($"Number of ticks elapsed: {cycle++}");
+                        Message message;
+                        var currentStateOfGame = arena.GameStateContext.GetStateOfGameAsEnum();
+                        if(currentStateOfGame != GameStateEnum.PostGame)
+                            message = new Message(arena.ColorMap, currentStateOfGame, null);
+                        else
+                        {
+                            // Only send podium data when the game has finished.
+                            var podium = arena.GetPlayerStandings().Take(3).ToArray();
+                            message = new Message(arena.ColorMap, currentStateOfGame, podium);
+                        }
 
-                        // Update every player
-                        // Logger.Instance.LogMessage($"Updating {Players.Count} player(s)");
-
-                        var message = new Message(arena.ColorMap);
                         foreach (var p in arena.Players)
-                        {
                             p.OnNext(message);
-                        }
 
-                        // Generate food.
-                        arena.FoodSpawningFacade.ExecuteTick();
-
-                        // Wait until next server tick.
-                        // Logger.Instance.LogMessage("Waiting until next tick ...");
-
-                        if (cycles % 50 == 0)
-                        {
-                            foreach(var p in arena.Players)
-                                p.ResetSnake();
-                        }
-
-                        cycles++;
+                        // Run game
+                        arena.GameStateContext.Run();
 
                         // Run the game slower
                         await Task.Delay(100);

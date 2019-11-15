@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Server.ArenaItems;
 using Server.Facades;
+using Server.GameStates;
 
 namespace Server
 {
@@ -21,6 +23,7 @@ namespace Server
         private readonly Random _random = new Random(0);
 
         public FoodSpawningFacade FoodSpawningFacade { get; }
+        public GameStateContext GameStateContext { get; }
 
         protected Arena()
         {
@@ -29,6 +32,8 @@ namespace Server
 
             // Create food spawning facade
             FoodSpawningFacade = new FoodSpawningFacadeAdapter(this, _random);
+
+            GameStateContext = new GameStateContext(this);
         }
 
 
@@ -45,23 +50,23 @@ namespace Server
             {
                 try
                 {
-                    // Print the number of ticks elapsed.
-                    // Logger.Instance.LogMessage($"Number of ticks elapsed: {cycle++}");
-
-                    // Update every player
-                    // Logger.Instance.LogMessage($"Updating {Players.Count} player(s)");
-
-                    var message = new Message(ColorMap);
-                    foreach (var p in Players)
+                    Message message;
+                    var currentStateOfGame = GameStateContext.GetStateOfGameAsEnum();
+                    if(currentStateOfGame != GameStateEnum.PostGame)
+                        message = new Message(ColorMap, currentStateOfGame, null);
+                    else
                     {
-                        p.OnNext(message);
+                        // Only send podium data when the game has finished.
+                        var podium = GetPlayerStandings().Take(3).ToArray();
+                        message = new Message(ColorMap, currentStateOfGame, podium);
                     }
 
-                    // Generate food.
-                    FoodSpawningFacade.ExecuteTick();
+                    foreach (var p in Players)
+                        p.OnNext(message);
 
-                    // Wait until next server tick.
-                    // Logger.Instance.LogMessage("Waiting until next tick ...");
+                    // Run game
+                    GameStateContext.Run();
+
                     await Task.Delay(250);
                 }
                 catch (Exception e)
@@ -69,6 +74,17 @@ namespace Server
                     Logger.Instance.LogError(e.StackTrace);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets standings for all players in the arena. The standings are sorted in descending order by snake lengths.
+        /// </summary>
+        /// <returns>An array of PlayerStandingsData objects</returns>
+        public IEnumerable<PlayerStandingsData> GetPlayerStandings()
+        {
+            var standings = Players.Select(p => new PlayerStandingsData(p.Snake.Color, p.Snake.Body.Count))
+                .OrderByDescending(st => st.SnakeLength).ToArray();
+            return standings;
         }
 
         public ICell GetCell(int x, int y) => Cells[x, y];
@@ -83,6 +99,21 @@ namespace Server
                 ColorMap.Remove(point);
             else
                 ColorMap[point] = value.Color;
+        }
+
+        /// <summary>
+        /// Resets the arena, preparing it for a new game.
+        /// </summary>
+        public void Reset()
+        {
+            for (int x = 0; x < Width; ++x)
+                for (int y = 0; y < Height; ++y)
+                    Cells[x, y] = null;
+
+            ColorMap.Clear();
+
+            foreach(var p in Players)
+                p.ResetSnake();
         }
 
         public void CreateFood()
