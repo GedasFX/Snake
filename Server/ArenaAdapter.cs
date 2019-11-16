@@ -9,7 +9,7 @@ namespace Server
     {
         private readonly ArenaAdaptee _adaptee = new ArenaAdaptee();
 
-        public override Task StartAsync() => _adaptee.StartAsync(this);
+        public override Task StartAsync() => base.StartAsync();
 
         private class ArenaAdaptee
         {

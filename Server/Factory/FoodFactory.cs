@@ -10,6 +10,9 @@ namespace Server
 
         private static IFoodItem Apple { get; } = new Apple();
         private static IFoodItem Orange { get; } = new Orange();
+        private static IFoodItem BrownApple { get; } = new CustomColorDecorator(Apple, Color.Brown);
+        private static IFoodItem DoubleYellowOrange { get; } = 
+            new DoubleEffectDecorator(new CustomColorDecorator(Orange, Color.Yellow));
 
         public static IFoodItem GenerateFoodItem()
         {
@@ -22,8 +25,8 @@ namespace Server
             {
                 0 => Apple,
                 1 => Orange,
-                2 => new CustomColorDecorator(Apple, Color.Brown),
-                3 => new DoubleEffectDecorator(new CustomColorDecorator(Apple, Color.Yellow)),
+                2 => BrownApple,
+                3 => DoubleYellowOrange,
                 _ => throw new ArgumentOutOfRangeException(nameof(index), index, null),
             };
         }

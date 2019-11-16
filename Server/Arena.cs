@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net.WebSockets;
@@ -46,20 +47,18 @@ namespace Server
 
         public virtual async Task StartAsync()
         {
+            // Uncomment for memory tracking
+            //_ = TrackMemory();
             while (true)
             {
                 try
                 {
-                    Message message;
                     var currentStateOfGame = GameStateContext.GetStateOfGameAsEnum();
-                    if(currentStateOfGame != GameStateEnum.PostGame)
-                        message = new Message(ColorMap, currentStateOfGame, null);
-                    else
+                    var message = new Message(ColorMap, currentStateOfGame, currentStateOfGame switch
                     {
-                        // Only send podium data when the game has finished.
-                        var podium = GetPlayerStandings().Take(3).ToArray();
-                        message = new Message(ColorMap, currentStateOfGame, podium);
-                    }
+                        GameStateEnum.PostGame => GetPlayerStandings().Take(3).ToArray(),
+                        _ => null
+                    });
 
                     foreach (var p in Players)
                         p.OnNext(message);
@@ -67,12 +66,23 @@ namespace Server
                     // Run game
                     GameStateContext.Run();
 
-                    await Task.Delay(250);
+                    await Task.Delay(100);
                 }
                 catch (Exception e)
                 {
                     Logger.Instance.LogError(e.StackTrace);
                 }
+            }
+        }
+
+        private static async Task TrackMemory()
+        {
+            var process = Process.GetCurrentProcess();
+            while (true)
+            {
+                Logger.Instance.LogWithColor(ConsoleColor.DarkYellow, $"[PID {process.Id}] {GC.GetTotalMemory(true) / 1024:N} KB");
+
+                await Task.Delay(500);
             }
         }
 
