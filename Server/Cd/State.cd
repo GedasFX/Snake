@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Server.GameStates.PregameCountdownState">
+    <Position X="5" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAABAAAAAAAACAAEIQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameStates\PregameCountdownState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Server.GameStates.GameInProgressState">
+    <Position X="7.25" Y="1.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAQAAAAABAAAAAAAACAAAIQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameStates\GameInProgressState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Server.GameStates.GameEndingSoonState">
+    <Position X="10.5" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EIAAAAAAAAAABAAAAAAAACAAAIQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameStates\GameEndingSoonState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Server.GameStates.PostGameCountdownState">
+    <Position X="12.75" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAABAAAAAAAACAAAIQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameStates\PostGameCountdownState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Server.GameStates.GameStateContext">
+    <Position X="5" Y="4.5" Width="2.75" />
+    <Members>
+      <Field Name="_gameEndingSoonStateDuration" Hidden="true" />
+      <Field Name="_gameInProgressStateDuration" Hidden="true" />
+      <Field Name="_postGameCountdownStateDuration" Hidden="true" />
+      <Field Name="_pregameCountdownStateDuration" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAkAAAAUAAAABAAACIAAAAAAAAAAAAQAAAAAAACCABI=</HashCode>
+      <FileName>GameStates\GameStateContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Server.GameStates.IGameState">
+    <Position X="8" Y="4.5" Width="1.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAIQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameStates\IGameState.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Server.GameStates.GameStateEnum">
+    <Position X="9.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAIAAAABAQABA=</HashCode>
+      <FileName>GameStates\GameStateEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
