@@ -16,7 +16,7 @@ namespace Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, Arena arena)
         {
-            arena.StartAsync().ConfigureAwait(false);
+            _ = arena.StartAsync();
 
             app.UseWebSockets();
             app.Run(async context =>
@@ -25,7 +25,7 @@ namespace Server
                 {
                     using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
                     var task = new TaskCompletionSource<object>();
-                    arena.Connect(webSocket, task);
+                    arena.Players.Connect(webSocket, task);
                     await task.Task;
                 }
                 else

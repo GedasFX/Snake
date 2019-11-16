@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Server.ArenaItems;
 using Server.Facades;
@@ -11,9 +10,9 @@ using Server.GameStates;
 
 namespace Server
 {
-    public class Arena : IObservable<Message>
+    public class Arena
     {
-        public List<Player> Players { get; } = new List<Player>();
+        public PlayerCollection Players { get; }
 
         public int Width { get; } = 50;
         public int Height { get; } = 40;
@@ -28,6 +27,8 @@ namespace Server
 
         protected Arena()
         {
+            Players = new PlayerCollection(this);
+
             Cells = new ICell[Width, Height];
             ColorMap = new Dictionary<Point, Color>();
 
@@ -35,14 +36,6 @@ namespace Server
             FoodSpawningFacade = new FoodSpawningFacadeAdapter(this, _random);
 
             GameStateContext = new GameStateContext(this);
-        }
-
-
-        public void Connect(WebSocket socket, TaskCompletionSource<object> playerDisconnected)
-        {
-            var playerColor = Color.FromArgb(_random.Next(255), _random.Next(255), _random.Next(255));
-            var player = new Player(socket, playerDisconnected, this, playerColor);
-            Subscribe(player);
         }
 
         public virtual async Task StartAsync()
@@ -60,8 +53,7 @@ namespace Server
                         _ => null
                     });
 
-                    foreach (var p in Players)
-                        p.OnNext(message);
+                    Players.UpdateAll(message);
 
                     // Run game
                     GameStateContext.Run();
@@ -194,16 +186,6 @@ namespace Server
             p.X = x;
             p.Y = y;
             return p;
-        }
-
-        public IDisposable Subscribe(IObserver<Message> observer)
-        {
-            if (!(observer is Player player))
-                throw new ArgumentException();
-
-            Players.Add(player);
-
-            return player;
         }
     }
 }

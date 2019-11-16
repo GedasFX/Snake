@@ -48,10 +48,8 @@
     <Position X="4.75" Y="3.75" Width="1.5" />
     <Members>
       <Method Name="Arena" Hidden="true" />
-      <Method Name="Connect" Hidden="true" />
       <Method Name="CreateFood" Hidden="true" />
       <Method Name="GetCell" Hidden="true" />
-      <Method Name="Subscribe" Hidden="true" />
       <Method Name="UpdateCell" Hidden="true" />
     </Members>
     <Compartments>
@@ -59,10 +57,9 @@
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QAAAAAAABAAAAAAAAgIAAMAAAIAiAAEAAUAAAAAAAAE=</HashCode>
+      <HashCode>QEABAAAABAAABAAAAgIEAEAgAoAgAAEAAUAAAAAAAAE=</HashCode>
       <FileName>Arena.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Server.ArenaAdapter">
     <Position X="7" Y="3.25" Width="2.25" />

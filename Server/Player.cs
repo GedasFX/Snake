@@ -15,6 +15,7 @@ namespace Server
 
         // TrySet anything to this object to disconnect the player. Frees the websocket.
         private TaskCompletionSource<object> PlayerDisconnected { get; }
+        private PlayerCollection ConnectionHandler { get; }
         private Arena Arena { get; }
         public Snek Snake { get; }
 
@@ -22,11 +23,12 @@ namespace Server
         private int _deliveryFailCount;
         private const int MaxDeliveryAttempts = 5;
 
-        private Player(WebSocket socket, TaskCompletionSource<object> playerDisconnected, Arena arena, Point spawnPoint, Color color)
+        private Player(WebSocket socket, TaskCompletionSource<object> playerDisconnected, Arena arena, PlayerCollection connectionHandler, Point spawnPoint, Color color)
         {
             Socket = socket;
             PlayerDisconnected = playerDisconnected;
             Arena = arena;
+            ConnectionHandler = connectionHandler;
             Snake = new Snek(arena, spawnPoint, color);
 
             Task.Run(HandleDirectionChanges);
@@ -37,13 +39,13 @@ namespace Server
             var buf = new byte[1];
             while (true)
             {
-                await Socket.ReceiveAsync(new System.ArraySegment<byte>(buf), CancellationToken.None);
+                await Socket.ReceiveAsync(new ArraySegment<byte>(buf), CancellationToken.None);
                 Snake.ChangeDirection((Direction)buf[0]);
             }
         }
 
-        public Player(WebSocket socket, TaskCompletionSource<object> playerDisconnected, Arena arena, Color color)
-            : this(socket, playerDisconnected, arena, arena.GetSpawnPoint(), color)
+        public Player(WebSocket socket, TaskCompletionSource<object> playerDisconnected, Arena arena, PlayerCollection connectionHandler, Color color)
+            : this(socket, playerDisconnected, arena, connectionHandler, arena.GetSpawnPoint(), color)
         {
         }
 
@@ -108,11 +110,14 @@ namespace Server
 
         public void Dispose()
         {
-            Arena.Players.Remove(this);
+            // Stop sending data
+            ConnectionHandler.Disconnect(this);
+
+            // Clear the snake from the board
             foreach (var point in Snake.Body)
-            {
                 Arena.UpdateCell(point.X, point.Y, null);
-            }
+            
+            // Close the websocket
             PlayerDisconnected.TrySetResult(null);
         }
     }
