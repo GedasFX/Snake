@@ -4,7 +4,7 @@ using Server.ArenaItems;
 
 namespace Server
 {
-    public class FoodFactory : IArenaObjectFactory
+    public class FoodFlyweight : IArenaObjectFactory
     {
         private static readonly Random Random = new Random();
 
@@ -13,13 +13,14 @@ namespace Server
         private static IFoodItem BrownApple { get; } = new CustomColorDecorator(Apple, Color.Brown);
         private static IFoodItem DoubleYellowOrange { get; } = 
             new DoubleEffectDecorator(new CustomColorDecorator(Orange, Color.Yellow));
+        private static IFoodItem BlackHoleBuff { get; } = new BlackHoleBuff();
 
-        public static IFoodItem GenerateFoodItem()
+        public static IFoodItem GetRandomFoodItem()
         {
-            return GenerateFoodItem(Random.Next(4));
+            return GetFoodItem(Random.Next(5));
         }
 
-        public static IFoodItem GenerateFoodItem(int index)
+        public static IFoodItem GetFoodItem(int index)
         {
             return index switch
             {
@@ -27,13 +28,14 @@ namespace Server
                 1 => Orange,
                 2 => BrownApple,
                 3 => DoubleYellowOrange,
+                4 => BlackHoleBuff,
                 _ => throw new ArgumentOutOfRangeException(nameof(index), index, null),
             };
         }
 
         public ICell CreateObject()
         {
-            return GenerateFoodItem();
+            return GetRandomFoodItem();
         }
     }
 }

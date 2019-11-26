@@ -57,32 +57,32 @@ namespace Server
 
             return player;
         }
+    }
 
-        private class PlayerEnumerator : IEnumerator<Player>
+    internal class PlayerEnumerator : IEnumerator<Player>
+    {
+        private int _position = -1;
+        private readonly IList<Player> _players;
+
+        public Player Current => _players[_position];
+
+        public PlayerEnumerator(IList<Player> players)
         {
-            private int _position = -1;
-            private readonly IList<Player> _players;
-
-            public Player Current => _players[_position];
-
-            public PlayerEnumerator(IList<Player> players)
-            {
-                _players = players;
-            }
-
-            object IEnumerator.Current => Current;
-
-            public bool MoveNext()
-            {
-                return ++_position < _players.Count;
-            }
-
-            public void Reset()
-            {
-                _position = -1;
-            }
-
-            public void Dispose() { }
+            _players = players;
         }
+
+        object IEnumerator.Current => Current;
+
+        public bool MoveNext()
+        {
+            return ++_position < _players.Count;
+        }
+
+        public void Reset()
+        {
+            _position = -1;
+        }
+
+        public void Dispose() { }
     }
 }

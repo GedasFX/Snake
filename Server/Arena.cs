@@ -62,7 +62,7 @@ namespace Server
                 }
                 catch (Exception e)
                 {
-                    Logger.Instance.LogError(e.StackTrace);
+                    Logger.Instance.LogError(e.ToString());
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace Server
 
         public void CreateFood(int x, int y)
         {
-            UpdateCell(x, y, FoodFactory.GenerateFoodItem());
+            UpdateCell(x, y, FoodFlyweight.GetRandomFoodItem());
         }
 
         /// <summary>

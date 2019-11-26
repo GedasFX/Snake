@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Server.FoodFlyweight">
+    <Position X="6" Y="3.25" Width="2.75" />
+    <AssociationLine Name="Apple" Type="Server.ArenaItems.IFoodItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="5.273" />
+        <Point X="11.875" Y="5.273" />
+        <Point X="11.875" Y="3.941" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.289" Y="0.808" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="BrownApple" Type="Server.ArenaItems.IFoodItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="4.478" />
+        <Point X="11.25" Y="4.478" />
+        <Point X="11.25" Y="3.941" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="DoubleYellowOrange" Type="Server.ArenaItems.IFoodItem" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="3.625" />
+        <Point X="11" Y="3.625" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Orange" Type="Server.ArenaItems.IFoodItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="4.911" />
+        <Point X="11.562" Y="4.911" />
+        <Point X="11.562" Y="3.941" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.402" Y="0.466" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAEBABABAAAAAAABAABgQAAAAAAAAAAAA=</HashCode>
+      <FileName>Factory\FoodFlyweight.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Apple" />
+      <Property Name="BrownApple" />
+      <Property Name="DoubleYellowOrange" />
+      <Property Name="Orange" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Server.ArenaItems.IFoodItem" Collapsed="true">
+    <Position X="11" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ArenaItems\IFoodItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Server.IArenaObjectFactory" Collapsed="true">
+    <Position X="3.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Factory\IArenaObjectFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

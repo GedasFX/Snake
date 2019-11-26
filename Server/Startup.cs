@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,9 +16,42 @@ namespace Server
             services.AddSingleton<Arena, ArenaAdapter>();
         }
 
+
+
+        private class C : IEnumerable<int>
+        {
+            public IEnumerator<int> GetEnumerator() => B().GetEnumerator();
+
+            private IEnumerable<int> B()
+            {
+                var rand = new Random();
+                int radn;
+                do
+                {
+                    radn = rand.Next(200);
+                    yield return radn;
+                } while (radn < 150);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        }
+
+
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, Arena arena)
         {
+
+
+            Task.Run(() =>
+            {
+                var c = new C();
+                foreach (var item in c)
+                {
+                    Console.WriteLine(item);
+                }
+            }).Wait();
+
             _ = arena.StartAsync();
 
             app.UseWebSockets();

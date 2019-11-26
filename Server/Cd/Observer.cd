@@ -6,7 +6,6 @@
       <Method Name="Arena" Hidden="true" />
       <Property Name="Cells" Hidden="true" />
       <Property Name="ColorMap" Hidden="true" />
-      <Method Name="Connect" Hidden="true" />
       <Method Name="CreateFood" Hidden="true" />
       <Property Name="FoodSpawningFacade" Hidden="true" />
       <Method Name="GetCell" Hidden="true" />
@@ -19,10 +18,9 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QAAAAAAABAAAAAAAAgIAAMAAAIAiAAEAAUAAAAAAAAE=</HashCode>
+      <HashCode>QEABAAAABAAABAAAAgIEAEAgAoAgAAEAAUAAAAAAAAE=</HashCode>
       <FileName>Arena.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Server.Message" Collapsed="true">
     <Position X="10.25" Y="4.25" Width="1.5" />
@@ -30,7 +28,7 @@
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAIAA=</HashCode>
       <FileName>Message.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -46,7 +44,7 @@
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AMAAAAAAACSAAAIAAAAAAQACAAAIAQAACAAAACAAAAA=</HashCode>
+      <HashCode>AMAAAAAAACSAAAIAAAAAAQACAAAIAQAACIAAACAAAEA=</HashCode>
       <FileName>Player.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

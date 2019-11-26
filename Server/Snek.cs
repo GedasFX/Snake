@@ -17,7 +17,7 @@ namespace Server
         /// </summary>
         public LinkedList<Point> Body { get; set; }
 
-        private readonly Arena _arena;
+        public Arena Arena { get; }
         private Point _speed;
 
         public int Growth { get; set; } = 2;
@@ -43,7 +43,7 @@ namespace Server
 
         public Snek(Arena arena, Point spawnPoint, LinkedList<Point> body, Direction direction, int speedModifier, Color color)
         {
-            _arena = arena;
+            Arena = arena;
 
             Body = body;
             SpeedModifier = speedModifier;
@@ -64,12 +64,12 @@ namespace Server
         {
             // Clear all cells occupied by this snake in the arena
             foreach(var p in Body)
-                _arena.UpdateCell(p.X, p.Y, null);
+                Arena.UpdateCell(p.X, p.Y, null);
 
             Body = new LinkedList<Point>();
             Growth = 2;
 
-            var spawnPoint = _arena.GetSpawnPoint();
+            var spawnPoint = Arena.GetSpawnPoint();
             Body.AddLast(spawnPoint);
 
             var direction = Direction.Right;
@@ -82,10 +82,10 @@ namespace Server
             var newHead = GetNewHead();
 
             // If an object on the ground exists, interact with it.
-            _arena.GetCell(newHead.X, newHead.Y)?.Interact(this);
+            Arena.GetCell(newHead.X, newHead.Y)?.Interact(this);
 
             // Set the currently visited cell as the player's.
-            _arena.UpdateCell(newHead.X, newHead.Y, new SnekBody(Color, this, Body.AddLast(newHead)));
+            Arena.UpdateCell(newHead.X, newHead.Y, new SnekBody(Color, this, Body.AddLast(newHead)));
 
             // Free the tail cell if snake is not growing.
             var tail = Body.First.Value;
@@ -93,7 +93,7 @@ namespace Server
                 Growth--;
             else
             {
-                _arena.UpdateCell(tail.X, tail.Y, null);
+                Arena.UpdateCell(tail.X, tail.Y, null);
                 Body.RemoveFirst();
             }
 
@@ -154,16 +154,16 @@ namespace Server
         {
             var head = Body.Last.Value;
 
-            var newX = (head.X + _speed.X) % _arena.Width;
+            var newX = (head.X + _speed.X) % Arena.Width;
             if (newX < 0)
             {
-                newX += _arena.Width;
+                newX += Arena.Width;
             }
 
-            var newY = (head.Y + _speed.Y) % _arena.Height;
+            var newY = (head.Y + _speed.Y) % Arena.Height;
             if (newY < 0)
             {
-                newY += _arena.Height;
+                newY += Arena.Height;
             }
 
             var newHead = new Point(newX, newY);
@@ -177,7 +177,7 @@ namespace Server
             {
                 var cell = Body.First.Value;
                 Body.RemoveFirst();
-                _arena.UpdateCell(cell.X, cell.Y, null);
+                Arena.UpdateCell(cell.X, cell.Y, null);
             }
 
             // Trim it once more, because it was trimmed up until the trim point. Exempt if it would obliterate the snake.
@@ -185,7 +185,7 @@ namespace Server
             {
                 var cell = Body.First.Value;
                 Body.RemoveFirst();
-                _arena.UpdateCell(cell.X, cell.Y, null);
+                Arena.UpdateCell(cell.X, cell.Y, null);
             }
         }
 
