@@ -50,11 +50,14 @@ namespace Server.GameStates
             {
                 if(_ticksLeftUntilPregameStart % 10 == 0)
                 {
-                    string message = $"[GAME STATE] Pregame countdown starts in {_ticksLeftUntilPregameStart} ticks.";
+                    var message =
+                        $"[GAME STATE] If any players are left, the pregame countdown will start in {_ticksLeftUntilPregameStart} ticks.";
                     Logger.Instance.LogWithColor(ConsoleColor.Blue, message);
                 }
 
                 _ticksLeftUntilPregameStart--;
+
+                // If no players are connected, let the state run its course.
             }
             else
             {

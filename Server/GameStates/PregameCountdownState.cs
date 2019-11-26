@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Server.GameStates
 {
@@ -38,6 +39,13 @@ namespace Server.GameStates
                         $"[GAME STATE] {_ticksLeftUntilGameStarts} ticks left until the game starts!");
 
                 _ticksLeftUntilGameStarts--;
+
+                // If no players are connected during the countdown, wait for at least one to join, then restart.
+                if (!_arena.Players.Any())
+                {
+                    var waitState = new WaitingForPlayersToConnectState(_arena, _context);
+                    _context.ChangeState(waitState);
+                }
             }
             else
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Server.GameStates
 {
@@ -41,6 +42,13 @@ namespace Server.GameStates
 
                 _arena.FoodSpawningFacade.ExecuteTick();
                 _ticksUntilGameEndingSoonCountdown--;
+
+                // If all players disconnected, wait for at least one to join, then start from the pregame countdown again.
+                if (!_arena.Players.Any())
+                {
+                    var waitState = new WaitingForPlayersToConnectState(_arena, _context);
+                    _context.ChangeState(waitState);
+                }
             }
             else
             {
