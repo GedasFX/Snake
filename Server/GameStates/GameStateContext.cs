@@ -22,7 +22,7 @@ namespace Server.GameStates
             GameEndingSoonStateDuration = 50;
             PostGameCountdownStateDuration = 100;
 
-            _currentState = new PregameCountdownState(arena, this);
+            _currentState = new WaitingForPlayersToConnectState(arena, this);
             _currentState.OnStateEnter();
         }
 
