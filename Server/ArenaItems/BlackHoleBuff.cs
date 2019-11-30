@@ -33,12 +33,10 @@ namespace Server.ArenaItems
         public void Interact(Snek snek)
         {
             var coords = snek.Body.Last.Value;
-            foreach (var item in new ArenaEnumerable(snek.Arena, coords.X, coords.Y))
+            foreach (var (item, x, y) in new ArenaEnumerable(snek.Arena, coords.X, coords.Y, Radius))
             {
-                var obj = item.Item1;
-
-                obj.Interact(snek);
-                snek.Arena.UpdateCell(item.Item2, item.Item3, null);
+                item.Interact(snek);
+                snek.Arena.UpdateCell(x, y, null);
             }
         }
 
@@ -57,18 +55,19 @@ namespace Server.ArenaItems
 
         private int currentX, currentY;
 
-        private const int Radius = 5;
+        private readonly int Radius;
 
         public (ICell, int, int) Current => (_arena.GetCell(currentX % _arena.Width, currentY % _arena.Height), currentX % _arena.Width, currentY % _arena.Height);
 
         object IEnumerator.Current => Current;
 
-        public ArenaEnumerable(Arena arena, int startX, int startY)
+        public ArenaEnumerable(Arena arena, int startX, int startY, int radius)
         {
             _arena = arena;
 
             centerX = startX;
             centerY = startY;
+            Radius = radius;
 
             minY = startY + arena.Height - Radius;
 
