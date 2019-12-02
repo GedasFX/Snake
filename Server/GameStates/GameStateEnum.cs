@@ -9,7 +9,8 @@
         InProgress = 1,     // Game is currently in progress
         EndingSoon = 2,     // Game is in progress, but is about to end soon
         PostGame = 3,       // Game has ended
-        Unknown = 4         // Initial value for clients joining the game
+        Unknown = 4,        // Initial value for clients joining the game
                             // (refer to SnakeMainForm.JoinArena for how it is used)
+        Pending = 5         // For completion purposes, not used
     }
 }
