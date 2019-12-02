@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Server.Strategies.FoodSpawning;
 
 namespace Server.Facades
@@ -45,10 +46,58 @@ namespace Server.Facades
             SpawnFrequency = 5;
 
             // Set chance for food spawn during spawn ticks to 5%
-            SpawnChance = 100.0;
+            SpawnChance = 50.0;
 
             // Notify with message to console.
             // Logger.Instance.LogMessage("Food spawning facade constructed!");
+
+            TickLogic = new CommandChain(async next =>
+            {
+                // Increment the tick.
+                CurrentTick++;
+
+                await next();
+            })
+            .Use(async next =>
+            {
+                // Block chain if not spawnig tick
+                if (CurrentTick % SpawnFrequency != 0)
+                    return;
+
+                await next();
+            })
+            .Use(async next =>
+            {
+                Logger.Instance.LogMessage($"Food spawning facade: current tick {CurrentTick} is spawn tick!");
+                await next();
+            })
+            .Use(async next =>
+            {
+                // Roll for chance to spawn food.
+                var roll = _rng.NextDouble() * 100.0;
+
+                // Block chain if failed spawning.
+                if (roll >= SpawnChance)
+                {
+                    Logger.Instance.LogMessage($"Food spawning facade: roll unsuccessful!");
+                    return;
+                }
+
+                await next();
+            })
+            .UseStaticMessage($"Food spawning facade: roll successful! Spawning food...")
+            .Use(next =>
+            {
+                // Roll for chance to switch strategy.
+                var roll = _rng.Next(4);
+
+                // Block chain if failed spawning.
+                if (roll == 0)
+                    SwitchStrategyAtRandom();
+
+                // Ending element in the chain.
+                return Task.CompletedTask;
+            });
         }
 
         #region Arena & RNG variables
@@ -80,11 +129,9 @@ namespace Server.Facades
         /// <summary>
         /// The frequency (in ticks) at which food items may spawn in the arena (it depends on spawn chance also)
         /// </summary>
-        public int SpawnFrequency
-        {
+        public int SpawnFrequency {
             get => _spawnFrequency;
-            set
-            {
+            set {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException(nameof(value), "Spawn frequency cannot be zero or negative!");
 
@@ -97,11 +144,9 @@ namespace Server.Facades
         /// <summary>
         /// The percentage chance that food may spawn during the spawn tick. 
         /// </summary>
-        public double SpawnChance
-        {
+        public double SpawnChance {
             get => _spawnChance * 100.0; // Convert from range [0.0; 1.0] to range [0.0; 100.0]
-            set
-            {
+            set {
                 if (value < 0.0 || value > 100.0)
                     throw new ArgumentOutOfRangeException(nameof(value), "Spawn chance must be between 0 and 100%!");
 
@@ -117,36 +162,16 @@ namespace Server.Facades
         #endregion
 
         #region Methods
-        
+
+        public CommandChain TickLogic { get; set; }
+
         /// <summary>
         /// Executes a tick of the food spawning process. If this tick is a spawn tick, the spawner may spawn some food.
         /// This function should be called every tick.
         /// </summary>
-        public virtual void ExecuteTick()
+        public void ExecuteTick()
         {
-            // Check if the current tick is a spawn tick.
-            if (CurrentTick % SpawnFrequency == 0)
-            {
-                // Logger.Instance.LogMessage($"Food spawning facade: current tick {CurrentTick} is spawn tick!");
-                // Roll for chance to spawn food.
-                double roll = _rng.NextDouble() * 100.0;
-                if (roll < SpawnChance)
-                {
-                    // Logger.Instance.LogMessage($"Food spawning facade: roll successful! Spawning food...");
-                        _currentStrategy.Spawn(_arena);
-                }
-                else
-                {
-                    // Logger.Instance.LogMessage($"Food spawning facade: roll unsuccessful!");
-                }
-
-                if (roll > 95)
-                {
-                    SwitchStrategyAtRandom();
-                }
-            }
-
-            CurrentTick++;
+            TickLogic.ExecAsync().Wait();
         }
 
         /// <summary>

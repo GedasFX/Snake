@@ -1,28 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Server.Logger" Collapsed="true">
+  <Class Name="Server.LoggerChain" Collapsed="true">
     <Position X="11" Y="4" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="Instance" Type="Server.Logger" ManuallyRouted="true">
-      <Path>
-        <Point X="11.532" Y="4.562" />
-        <Point X="11.532" Y="4.914" />
-        <Point X="11.978" Y="4.914" />
-        <Point X="11.978" Y="4.562" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.13" Y="0.425" />
-      </MemberNameLabel>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AgAAAQAAAAAAAAAAAAAAAAAAIAAAAAAAQAAAAQAAAAA=</HashCode>
-      <FileName>Logger.cs</FileName>
+      <HashCode>AgAAAAAAAAAAAAAAAAAQAAAAAAAEAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>CommandChain.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Instance" />
-    </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

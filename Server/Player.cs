@@ -97,7 +97,7 @@ namespace Server
             }
 
             // Move snake only when the game is in progress
-            if(message.GameState == GameStateEnum.InProgress || message.GameState == GameStateEnum.EndingSoon)
+            if (message.GameState == GameStateEnum.InProgress || message.GameState == GameStateEnum.EndingSoon)
                 Snake.Move();
         }
 
@@ -116,7 +116,7 @@ namespace Server
             // Clear the snake from the board
             foreach (var point in Snake.Body)
                 Arena.UpdateCell(point.X, point.Y, null);
-            
+
             // Close the websocket
             PlayerDisconnected.TrySetResult(null);
         }
