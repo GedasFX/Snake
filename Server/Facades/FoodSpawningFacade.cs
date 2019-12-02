@@ -95,6 +95,9 @@ namespace Server.Facades
                 if (roll == 0)
                     SwitchStrategyAtRandom();
 
+                // Spawn food
+                _currentStrategy.Spawn(_arena);
+
                 // Ending element in the chain.
                 return Task.CompletedTask;
             });
