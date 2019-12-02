@@ -28,8 +28,9 @@
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <HashCode>AAAAAAAAAgAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Message.cs</FileName>
+      <NewMemberFileName>GameUpdate.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Server.Player">

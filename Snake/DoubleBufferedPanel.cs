@@ -2,11 +2,11 @@
 
 namespace Snake.Controls
 {
-    public sealed class DoubleBufferedPanel: Panel
+    public sealed class DoubleBufferedPanel : Panel
     {
         public DoubleBufferedPanel()
         {
-            this.DoubleBuffered = true;
+            DoubleBuffered = true;
         }
     }
 }

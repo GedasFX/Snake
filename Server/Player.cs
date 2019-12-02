@@ -36,11 +36,26 @@ namespace Server
 
         private async Task HandleDirectionChanges()
         {
-            var buf = new byte[1];
+            var buf = new byte[4096];
             while (true)
             {
-                await Socket.ReceiveAsync(new ArraySegment<byte>(buf), CancellationToken.None);
-                Snake.ChangeDirection((Direction)buf[0]);
+                var msg = "";
+                var isChat = false;
+                WebSocketReceiveResult res;
+                do
+                {
+                    res = await Socket.ReceiveAsync(new ArraySegment<byte>(buf), CancellationToken.None);
+                    if (res.Count > 1)
+                        isChat = true;
+
+                    if (isChat)
+                        msg += Encoding.ASCII.GetString(buf, 0, res.Count);
+                    else
+                        Snake.ChangeDirection((Direction)buf[0]);
+                } while (!res.EndOfMessage);
+
+                if (isChat)
+                    ConnectionHandler.BroadcastMessage($"[CHAT] {Snake.Color}: {msg}");
             }
         }
 
@@ -97,7 +112,8 @@ namespace Server
             }
 
             // Move snake only when the game is in progress
-            if (message.GameState == GameStateEnum.InProgress || message.GameState == GameStateEnum.EndingSoon)
+            if (message.MessageType == MessageType.GameUpdate)
+            if (((GameUpdate)message.Content).GameState == GameStateEnum.InProgress || ((GameUpdate)message.Content).GameState == GameStateEnum.EndingSoon)
                 Snake.Move();
         }
 

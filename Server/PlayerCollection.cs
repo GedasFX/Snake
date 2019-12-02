@@ -39,6 +39,11 @@ namespace Server
             return GetEnumerator();
         }
 
+        public void BroadcastMessage(string message)
+        {
+            UpdateAll(new Message(message));
+        }
+
         public void UpdateAll(Message message)
         {
             using var enumerator = GetEnumerator();

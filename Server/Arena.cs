@@ -47,11 +47,11 @@ namespace Server
                 try
                 {
                     var currentStateOfGame = GameStateContext.GetStateOfGameAsEnum();
-                    var message = new Message(ColorMap, currentStateOfGame, currentStateOfGame switch
+                    var message = new Message(new GameUpdate(ColorMap, currentStateOfGame, currentStateOfGame switch
                     {
                         GameStateEnum.PostGame => GetPlayerStandings().Take(3).ToArray(),
                         _ => null
-                    });
+                    }));
 
                     Players.UpdateAll(message);
 
@@ -114,7 +114,7 @@ namespace Server
 
             ColorMap.Clear();
 
-            foreach(var p in Players)
+            foreach (var p in Players)
                 p.ResetSnake();
         }
 
@@ -159,7 +159,7 @@ namespace Server
             {
                 for (int y = 0; y < Cells.GetLength(1); ++y)
                 {
-                    if(Cells[x, y] == null)
+                    if (Cells[x, y] == null)
                         emptyPoints.Add(new Point(x, y));
                 }
             }

@@ -19,7 +19,31 @@ namespace Snake
         Pending = 5         // For completion purposes, not used
     }
 
+    public enum MessageType
+    {
+        GameUpdate, Chat
+    }
+
     public class Message
+    {
+        public MessageType MessageType { get; set; }
+        public object Content { get; set; }
+
+        private Message() { }
+
+        public Message(GameUpdate content)
+        {
+            MessageType = MessageType.GameUpdate;
+            Content = content;
+        }
+        public Message(string content)
+        {
+            MessageType = MessageType.Chat;
+            Content = content;
+        }
+    }
+
+    public class GameUpdate
     {
         public Dictionary<Point, Color> Arena { get; set; }
         // State of the game (pregame, in progress, about to end soon, post-game)

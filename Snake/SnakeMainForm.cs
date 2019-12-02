@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ConsoleColor = System.ConsoleColor;
 
 namespace Snake
@@ -44,6 +45,17 @@ namespace Snake
                     throw;
                 }
 
+                _ = Task.Run(() =>
+                {
+                    while (true)
+                    {
+                        var line = Console.ReadLine();
+                        var segment = new ArraySegment<byte>(Encoding.UTF8.GetBytes(line));
+
+                        socket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
+                    }
+                });
+
                 while (true)
                 {
                     try
@@ -61,8 +73,17 @@ namespace Snake
                         // await Console.Out.WriteLineAsync($"Received {res.Count} bytes");
 
                         var message = JsonConvert.DeserializeObject<Message>(msg);
-                        WriteGameInfo(message);
-                        _map = message.Arena;
+                        if (message.MessageType == MessageType.GameUpdate)
+                        {
+                            var gu = (message.Content as JObject).ToObject<GameUpdate>();
+
+                            WriteGameInfo(gu);
+                            _map = gu.Arena;
+                        }
+                        else
+                        {
+                            Console.WriteLine(message.Content);
+                        }
 
                         PanelArena.Refresh();
 
@@ -83,7 +104,7 @@ namespace Snake
         /// standings of the top three players are written as well.
         /// </summary>
         /// <param name="message">Message received from the server</param>
-        private void WriteGameInfo(Message message)
+        private void WriteGameInfo(GameUpdate message)
         {
             var currentState = message.GameState;
 

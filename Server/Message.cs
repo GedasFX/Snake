@@ -1,24 +1,28 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using Server.GameStates;
+﻿using System;
 
 namespace Server
 {
     public class Message
     {
-        public Dictionary<Point, Color> Arena { get; }
+        public MessageType MessageType { get; set; }
+        public object Content { get; set; }
 
-        // State of the game (pregame, in progress, ending soon, post-game)
-        public GameStateEnum GameState { get; }
+        private Message() { }
 
-        // Player standings data for the top three players (only sent post-game)
-        public PlayerStandingsData[] Podium;
-
-        public Message(Dictionary<Point, Color> colorMap, GameStateEnum state, PlayerStandingsData[] podium)
+        public Message(GameUpdate content)
         {
-            Arena = colorMap;
-            GameState = state;
-            Podium = podium;
+            MessageType = MessageType.GameUpdate;
+            Content = content;
         }
+        public Message(string content)
+        {
+            MessageType = MessageType.Chat;
+            Content = content;
+        }
+    }
+
+    public enum MessageType
+    {
+        GameUpdate, Chat
     }
 }
