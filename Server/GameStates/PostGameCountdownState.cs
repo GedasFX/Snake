@@ -26,7 +26,7 @@ namespace Server.GameStates
             _ticksLeftUntilPregameStart = _context.PostGameCountdownStateDuration;
         }
 
-        // Log player standings.
+        // Log player standings, clear context's caretaker.
         public void OnStateEnter()
         {
             Logger.Instance.LogWithColor(ConsoleColor.Blue, "[GAME STATE] Game has ended!");
@@ -42,6 +42,9 @@ namespace Server.GameStates
                 string line = $"Player (color: {element.PlayerColor.ToString()}): {element.SnakeLength}";
                 Logger.Instance.LogWithColor(ConsoleColor.Green, line);
             }
+            
+            // Remove previously held memento in caretaker.
+            _context.Caretaker.RemoveStoredMemento();
         }
 
         public void RunTick()
@@ -68,5 +71,6 @@ namespace Server.GameStates
         }
 
         public GameStateEnum ToEnum() => GameStateEnum.PostGame;
+        public int GetRemainingDuration() => _ticksLeftUntilPregameStart;
     }
 }

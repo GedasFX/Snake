@@ -19,5 +19,11 @@
         /// Gets the corresponding GameStateEnum value for the concrete state.
         /// </summary>
         GameStateEnum ToEnum();
+
+        /// <summary>
+        /// Returns the number of ticks remaining for the current state.
+        /// </summary>
+        /// <returns></returns>
+        int GetRemainingDuration();
     }
 }

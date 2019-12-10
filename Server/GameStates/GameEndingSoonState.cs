@@ -25,8 +25,7 @@ namespace Server.GameStates
         }
 
         // Log state change to console.
-        public void OnStateEnter() =>
-            Logger.Instance.LogWithColor(ConsoleColor.Blue, "[GAME STATE] Game will end soon!");
+        public void OnStateEnter() => Logger.Instance.LogWithColor(ConsoleColor.Blue, "[GAME STATE] Game will end soon!");
 
         // Runs a tick of the food spawning facade, while doing some occasional logging to the console.
         public void RunTick()
@@ -42,9 +41,13 @@ namespace Server.GameStates
                 _arena.FoodSpawningFacade.ExecuteTick();
                 _ticksLeft--;
 
-                // If all players disconnected, wait for at least one to join, then start from the pregame countdown again.
+                // If all players disconnected, save the current state then wait for at least one to join
                 if (!_arena.Players.Any())
                 {
+                    // Save the state, so that when a player joins, the game will resume.
+                    var memento = _context.CreateGameStateMemento();
+                    _context.Caretaker.Memento = memento;
+
                     var waitState = new WaitingForPlayersToConnectState(_arena, _context);
                     _context.ChangeState(waitState);
                 }
@@ -58,5 +61,6 @@ namespace Server.GameStates
         }
 
         public GameStateEnum ToEnum() => GameStateEnum.EndingSoon;
+        public int GetRemainingDuration() => _ticksLeft;
     }
 }

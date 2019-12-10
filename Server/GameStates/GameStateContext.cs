@@ -1,14 +1,19 @@
 ﻿using System;
+using Server.Memento;
+using ConsoleColor = System.ConsoleColor;
 
 namespace Server.GameStates
 {
     /// <summary>
     /// Context for game state objects.
     /// </summary>
-    public class GameStateContext
+    public class GameStateContext : IGameStateOriginator
     {
         // Holds the current state of the game
         private IGameState _currentState;
+
+        // Holds the previously saved current state.
+        public GameStateCaretaker Caretaker { get; }
 
         /// <summary>
         /// Constructs the game state context and sets some default values for the state durations.
@@ -21,6 +26,9 @@ namespace Server.GameStates
             GameInProgressStateDuration = 150;
             GameEndingSoonStateDuration = 50;
             PostGameCountdownStateDuration = 100;
+
+            // Construct caretaker
+            Caretaker = new GameStateCaretaker();
 
             _currentState = new WaitingForPlayersToConnectState(arena, this);
             _currentState.OnStateEnter();
@@ -121,5 +129,26 @@ namespace Server.GameStates
         }
 
         #endregion
+
+
+        #region Memento pattern
+
+        public GameStateMemento CreateGameStateMemento()
+        {
+            Logger.Instance.LogWithColor(ConsoleColor.Magenta, "[MEMENTO] Saving game state to memento.");
+            return new GameStateMemento(_currentState);
+        }
+
+        public void RestoreFromGameStateMemento(GameStateMemento memento)
+        {
+            var restoredState = memento.StoredGameState;
+            int ticksRemaining = restoredState.GetRemainingDuration();
+            _currentState = restoredState;
+            var msg = $"[MEMENTO] Restored game state from memento. Ticks remaining for the restored state: {ticksRemaining}";
+            Logger.Instance.LogWithColor(ConsoleColor.Magenta, msg);
+        }
+
+        #endregion
+
     }
 }

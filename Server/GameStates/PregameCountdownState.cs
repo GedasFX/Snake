@@ -56,5 +56,7 @@ namespace Server.GameStates
         }
 
         public GameStateEnum ToEnum() => GameStateEnum.Pregame;
+
+        public int GetRemainingDuration() => _ticksLeftUntilGameStarts;
     }
 }

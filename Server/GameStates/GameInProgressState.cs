@@ -43,9 +43,13 @@ namespace Server.GameStates
                 _arena.FoodSpawningFacade.ExecuteTick();
                 _ticksUntilGameEndingSoonCountdown--;
 
-                // If all players disconnected, wait for at least one to join, then start from the pregame countdown again.
+                // If all players disconnected, save the current state then wait for a player to join.
                 if (!_arena.Players.Any())
                 {
+                    // By saving this state to the context's caretaker, the game will resume when a new player joins again.
+                    var memento = _context.CreateGameStateMemento();
+                    _context.Caretaker.Memento = memento;
+
                     var waitState = new WaitingForPlayersToConnectState(_arena, _context);
                     _context.ChangeState(waitState);
                 }
@@ -59,5 +63,6 @@ namespace Server.GameStates
         }
 
         public GameStateEnum ToEnum() => GameStateEnum.InProgress;
+        public int GetRemainingDuration() => _ticksUntilGameEndingSoonCountdown;
     }
 }
