@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Server.GameStates.GameStateContext">
+    <Position X="0.5" Y="2.25" Width="4.75" />
+    <Members>
+      <Field Name="_gameEndingSoonStateDuration" Hidden="true" />
+      <Field Name="_gameInProgressStateDuration" Hidden="true" />
+      <Field Name="_postGameCountdownStateDuration" Hidden="true" />
+      <Field Name="_pregameCountdownStateDuration" Hidden="true" />
+      <Method Name="ChangeState" Hidden="true" />
+      <Property Name="GameEndingSoonStateDuration" Hidden="true" />
+      <Property Name="GameInProgressStateDuration" Hidden="true" />
+      <Method Name="GameStateContext" Hidden="true" />
+      <Method Name="GetStateOfGameAsEnum" Hidden="true" />
+      <Property Name="PostGameCountdownStateDuration" Hidden="true" />
+      <Property Name="PregameCountdownStateDuration" Hidden="true" />
+      <Method Name="Run" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAkAAACUAAAABAAACIAAAAAAAAAAAIQAAAAAAACCgBI=</HashCode>
+      <FileName>GameStates\GameStateContext.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Server.Memento.GameStateMemento">
+    <Position X="6" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Memento\GameStateMemento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Server.Memento.GameStateCaretaker">
+    <Position X="6" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Memento\GameStateCaretaker.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="memento" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="Server.Memento.IGameStateOriginator">
+    <Position X="0.75" Y="0.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAgAA=</HashCode>
+      <FileName>Memento\IGameStateOriginator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
